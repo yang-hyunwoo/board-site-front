@@ -1,18 +1,35 @@
 <template>
-   <div>
-    <router-view />
-  </div>
- 
+    <div>
+      <Header></Header>
+      <router-view></router-view>
+      <Footer></Footer>
+    </div>
 </template>
 
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html {
+    position: relative;
+    min-height: 100%;
+    margin: 0;
+}
+body {
+    min-height: 100%;
 }
 </style>
+
+<script>
+
+import Header from '@/components/layout/Header.vue'
+import Footer from '@/components/layout/Footer.vue'
+
+export default {
+  name: 'App',
+  components: {
+    Header,
+    Footer,
+  }
+}
+</script>
+
+
+

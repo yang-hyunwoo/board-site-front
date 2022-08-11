@@ -22,41 +22,44 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-# Created by https://www.toptal.com/developers/gitignore/api/macos,windows,vuejs
-# Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,vuejs
+# Created by https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,vue,vuejs
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows,visualstudiocode,vue,vuejs
 
-### macOS ###
-# General
-.DS_Store
-.AppleDouble
-.LSOverride
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
 
-# Icon must end with two \r
-Icon
+# Local History for Visual Studio Code
+.history/
 
+# Built Visual Studio Code Extensions
+*.vsix
 
-# Thumbnails
-._*
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
 
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
+# Support for Project snippet scope
+.vscode/*.code-snippets
 
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+# Ignore code-workspaces
+*.code-workspace
 
-### macOS Patch ###
-# iCloud generated files
-*.icloud
+### Vue ###
+# gitignore template for Vue.js projects
+#
+# Recommended template: Node.gitignore
+
+# TODO: where does this rule come from?
+docs/_book
+
+# TODO: where does this rule come from?
+test/
 
 ### Vuejs ###
 # Recommended template: Node.gitignore
@@ -92,4 +95,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,windows,vuejs
+# End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,vue,vuejs
