@@ -1,17 +1,36 @@
 import { createWebHistory, createRouter } from "vue-router";
-// import LoginVue  from '@/components/LoginVue.vue'
-import HelloWorld from '@/components/HelloWorld'
+
 const routes = [
-  // {
-  //   path: "/loginVue",
-  //   name: "LoginVue",
-  //   component: LoginVue,
-  // },
   {
-    path: "/",
-    name: "helloWorld",
-    component: HelloWorld,
+    path: '/',
+    name: 'defaultLayout',
+    component: () => import('@/components/layout/DefaultLayout.vue'),
+    children: [
+      {
+          path: '/',
+          name: 'home',
+          component: ()=> import('@/components/Home.vue'),
+      },
+      {
+          path: '/travelList',
+          name: 'travelList',
+          component: ()=> import('@/components/travel/TravelList.vue'),
+      },
+  ],
   },
+  {
+    path: '/',
+    name: 'emptyLayout',
+    component: () => import('@/components/layout/EmptyLayout.vue'),
+    children: [
+        {
+            path: '/login',
+            name: 'login',
+            component: ()=> import('@/components/login/Login'),
+        },
+    ],
+},
+
 ];
 
 const router = createRouter({
