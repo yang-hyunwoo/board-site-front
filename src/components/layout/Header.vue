@@ -2,20 +2,20 @@
 <template>
    <nav class="navbar navbar-expand-lg stick_header">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">프로젝트 이름</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active font-color" aria-current="page" href="#">Home</a>
+           <router-link class="nav-link font-color" to="/">홈</router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link font-color" href="#">Link</a>
+          <router-link class="nav-link font-color" to="/TravelList">여행 리스트</router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link font-color" href="#">Link</a>
+          <a class="nav-link font-color" href="#">게시판</a>
         </li>
       </ul>
       <ul>
@@ -41,6 +41,7 @@
   opacity : 0.7 !important;
   backdrop-filter : blur(30px) !important;
   background-color : #D9EDF7;
+  z-index: 9999;
  
 } 
 
@@ -77,7 +78,7 @@ export default {
   },
   methods: {
       loginClick() {
-        alert("로그인");
+            this.$router.push('/login');
       },
 
       logOutClick() {
