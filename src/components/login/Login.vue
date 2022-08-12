@@ -108,7 +108,7 @@ export default {
   },
   methods: {
       join() {
-        alert("회원가입");
+        this.$router.push("/join");
       },
       pwChk() {
         alert("비밀번호")
