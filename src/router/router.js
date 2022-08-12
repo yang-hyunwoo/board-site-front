@@ -16,6 +16,21 @@ const routes = [
           name: 'travelList',
           component: ()=> import('@/components/travel/TravelList.vue'),
       },
+      {
+        path: '/article',
+        name: 'article',
+        component: ()=> import('@/components/article/Article.vue'),
+     },
+     {
+      path: '/articleDetail',
+      name: 'articleDetail',
+      component: ()=> import('@/components/article/ArticleDetail.vue'),
+     },
+     {
+      path: '/articleWrite',
+      name: 'articleWrite',
+      component: ()=> import('@/components/article/ArticleWrite.vue'),
+     },
   ],
   },
   {
