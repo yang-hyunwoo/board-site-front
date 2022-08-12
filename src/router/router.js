@@ -17,6 +17,11 @@ const routes = [
           component: ()=> import('@/components/travel/TravelList.vue'),
       },
       {
+        path: '/travelDetail',
+        name: 'travelDetail',
+        component: ()=> import('@/components/travel/travelDetail.vue'),
+       },
+      {
         path: '/article',
         name: 'article',
         component: ()=> import('@/components/article/Article.vue'),
@@ -43,6 +48,11 @@ const routes = [
             name: 'login',
             component: ()=> import('@/components/login/Login'),
         },
+        {
+          path: '/join',
+          name: 'join',
+          component: ()=> import('@/components/login/Join'),
+      },
     ],
 },
 
@@ -55,18 +65,3 @@ const router = createRouter({
 
 export default router;
 
-
-// import { createWebHistory, createRouter } from "vue-router";
-// import LoginVue from "@/components/LoginVue"
-// const router = createRouter({
-//     history : createWebHistory(),
-//     routes : [ 
-//         {
-//             path : "loginVue",
-//             name : "LoginVue",
-//             component : LoginVue
-//         }
-//     ]
-// });
-
-// export default router;
