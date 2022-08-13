@@ -118,19 +118,21 @@
     </b-tr>
   </b-tbody>
   <button @click="writer">글 쓰기</button>
-  <!-- <b-tfoot>
-    <b-tr>
-      <b-td colspan="7" variant="secondary" class="text-right"> Total Rows: <b>5</b> </b-td>
-    </b-tr>
-  </b-tfoot> -->
 </b-table-simple>
   </section>
+  <Pagination :pageListItem="pageListItem"></Pagination>
 </template>
 <script>
+import Pagination from '../layout/Pagination';
+
 export default {
 	data: function () {
     return {
+      pageListItem : 9
     }
+  },
+  components: {
+    Pagination
   },
   methods: {
     articleDetailClick() {

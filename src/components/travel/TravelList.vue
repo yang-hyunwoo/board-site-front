@@ -156,7 +156,7 @@
     </div>
   </div>
 
-<Pagination></Pagination>
+<Pagination :pageListItem="pageListItem"></Pagination>
 </template>
 
 <script>
@@ -164,8 +164,7 @@ import Pagination from '../layout/Pagination';
 export default {
 	data: function () {
     return {
-        ex4CurrentPage: 10,
-        ex4Rows:1000
+      pageListItem : 10
     }
   },
   components: {

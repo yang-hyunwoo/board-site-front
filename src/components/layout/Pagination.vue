@@ -4,7 +4,7 @@
     <b-card style="justify-content: center;">
       <div class="overflow-auto">
         <div class="mt-3">
-          <b-pagination v-model="ex4CurrentPage" pills :total-rows="ex4Rows" @page-click="pageClick"></b-pagination>
+          <b-pagination v-model="ex4CurrentPage" pills :total-rows="ex4Rows" @page-click="pageClick"  :per-page="perPage" ></b-pagination>
         </div>
       </div>
     </b-card>
@@ -27,15 +27,22 @@
 
 <script>
 export default {
+  props :{
+    pageListItem: Number
+  }, 
 	data: function () {
     return {
     ex4CurrentPage:1,
-    ex4Rows:200
+    ex4Rows:200,
+    perPage : this.pageListItem
     }
   },
+  created() {
+  },  
   methods: {
     pageClick: function (button, page){ 
          this.ex4CurrentPage = page;
+         console.log(this.ex4CurrentPage);
       // this.getNoticeListByPage(page);
 			},
 			// getNoticeListByPage: function (page) {
