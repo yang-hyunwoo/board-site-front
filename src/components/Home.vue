@@ -75,7 +75,7 @@
     </button>
   </div>
 
-
+<button @Click="aaa">ddd</button>
 <div class="container marketing mgt">
 
     <!-- Three columns of text below the carousel -->
@@ -169,6 +169,12 @@ export default {
     this.chk = true;
   },
   methods: {
+    aaa() {
+         this.$axios.get("/api/trip/articles")
+      .then(res => {
+        console.log(res.data);
+      })
+    }
 
   }
 

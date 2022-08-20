@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -15,10 +15,12 @@
     "@toast-ui/editor": "^3.2.0",
     "@toast-ui/editor-plugin-color-syntax": "^3.1.0",
     "@toast-ui/vue-editor": "^3.2.0",
+    "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
     "bootstrap-icons": "^1.9.1",
     "bootstrap-vue-3": "^0.2.8",
     "core-js": "^3.8.3",
+    "cors": "^2.8.5",
     "mitt": "^3.0.0",
     "sass": "^1.54.4",
     "sass-loader": "^13.0.2",
