@@ -32,3 +32,18 @@ toast ui editor 로 변경 하여 개발 했다.
 현재 나의 프로젝트는 vue3으로 설정되어있어 정식적으로는 toast ui가 지원을 해주지 않아
 javascript 형식으로 수정 하여 개발을 했다.
 
+# 2022 08 20
+sweetalert 사용
+
+npm install -S vue-sweetalert2
+
+main.js
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+app.use(VueSweetalert2);
+
+사용
+this.$swal( 'success','You clicked the <b style="color:red;">error</b> button!','success');
+this.$swal(타이틀 ,내용 , "상태값");
+상태값 :  success / error , waring , info ,question
