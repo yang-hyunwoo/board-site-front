@@ -8,7 +8,7 @@
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
     <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" v-model="email">
       <label for="floatingInput">Email address</label>
     </div>
     <div class="form-floating">
@@ -32,6 +32,29 @@
     
   </body> -->
 </template>
+
+<script>
+export default {
+	data: function () {
+    return {
+      email:""
+    }
+  },
+  methods: {
+      join() {
+        this.$router.push("/join");
+      },
+      pwChk() {
+        alert("비밀번호")
+      }
+
+  }
+
+}
+
+
+</script>
+
 
 <style>
     .ares{
@@ -100,23 +123,3 @@
       } 
     </style>
 
-<script>
-export default {
-	data: function () {
-    return {
-    }
-  },
-  methods: {
-      join() {
-        this.$router.push("/join");
-      },
-      pwChk() {
-        alert("비밀번호")
-      }
-
-  }
-
-}
-
-
-</script>

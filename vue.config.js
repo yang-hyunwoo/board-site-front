@@ -4,6 +4,7 @@ module.exports = defineConfig({
   lintOnSave : false,
   devServer: {
     port: 4000,
+    allowedHosts: ['.iamport.kr'],
     proxy: {
       '/api' : {
         target : 'http://192.168.0.2:8081',

@@ -10,48 +10,42 @@
         <form class="needs-validation" novalidate>
           <div class="row g-3">
             <div class="col-10">
-              <label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
-              <input type="email" class="form-control" id="email" placeholder="you@example.com">
-              <div class="invalid-feedback">
-                Please enter a valid email address for shipping updates.
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="you@example.com" v-model="email">
+              <div v-if="!email_chk" style="color:red;">
+                정확한 이메일을 입력해주세요.
               </div>
             </div>
             <div class="col-10">
-              <label for="email" class="form-label">비밀번호 </label>
-              <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력해주세요.">
-              <div class="invalid-feedback">
-                Please enter a valid email address for shipping updates.
-              </div>
+              <label for="email" class="form-label">비밀번호 <br><span style="font-size: 12px;">(하나 이상의 문자 , 숫자 , 특수 문자,최소 8자의 비밀번호가 필요합니다.)</span></label>
+              <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력해주세요." v-model="password">
             </div>
             <div class="col-10">
               <label for="email" class="form-label">비밀번호 확인</label>
-              <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력해주세요.">
-              <div class="invalid-feedback">
-                Please enter a valid email address for shipping updates.
+              <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력해주세요." v-model="password_chk">
+              <div v-if="!pw_equal_chk" style="color:red;">
+                비밀번호가 일치하지 않습니다.
               </div>
             </div>
             <div class="col-10">
               <label for="email" class="form-label">이름</label>
-              <input type="email" class="form-control" id="email" placeholder="이름을 입력해주세요.">
-              <div class="invalid-feedback">
-                Please enter a valid email address for shipping updates.
-              </div>
+              <input type="text" class="form-control"  placeholder="이름을 입력해주세요." v-model="user_name">
             </div>
            <div class="col-10">
               <label for="email" class="form-label">닉네임 </label>
-              <input type="email" class="form-control" id="email" placeholder="닉네임을 입력해주세요.">
-              <div class="invalid-feedback">
-                Please enter a valid email address for shipping updates.
-              </div>
+              <input type="text" class="form-control"  placeholder="닉네임을 입력해주세요." v-model="nick_name">
             </div>
-
+            <div class="col-10">
+              <label for="email" class="form-label">휴대폰 번호</label>
+              <input type="text" class="form-control"  placeholder="ex)01023456899" v-model="phone_number" maxlength="13">
+            </div>
            <div class="col-10">
             <div class="form-check">
-              <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
+              <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required value="M" v-model="gender">
               <label class="form-check-label" for="credit">남자</label>
             </div>
             <div class="form-check">
-              <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
+              <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required value="F" v-model="gender">
               <label class="form-check-label" for="debit">여자</label>
             </div>
           </div>
@@ -65,17 +59,130 @@
         </form>
 
  <div class="col-10">
- <button class="w-100 btn btn-primary btn-lg" type="submit" @click="joinSucc">회원가입 하기</button>
+ <button class="w-100 btn btn-primary btn-lg" type="submit" @click="joinSucc">회원가입</button>
   </div>
   <p class="my-4"></p>
    <div class="col-10">
-<button class="w-100 btn btn-primary btn-lg"  @click="backClick">뒤로가기 빨간색</button>
+<button class="w-100 btn btn-primary btn-lg" style="background-color: #F56E6E;"  @click="backClick">뒤로가기</button>
   </div>
 
 </div>
 
     </div>
+      <BlackBg v-if="loading"></BlackBg>
 </template>
+
+
+<script>
+import BlackBg from "../loading/BlackBg"
+
+export default {
+    components: {
+    BlackBg
+  },
+	data: function () {
+    return {
+      email:"",
+      email_chk:false,
+      password: "",
+      password_chk:"",
+      pw_valid_chk:false,
+      pw_equal_chk:true,
+      user_name:"",
+      nick_name:"",
+      gender:"M",
+      phone_number:"",
+      loading:false,
+
+    }
+  },
+  methods: {
+      joinSucc() {
+        if(!this.email_chk) {
+            this.alert_chk("이메일 을");
+            return false;
+        }
+        if(!this.password){
+          this.alert_chk("비밀번호 를");
+          return false;
+        }
+        if(this.user_name == null || this.user_name == ""){
+            this.alert_chk("이름 을");
+            return false;
+        }
+        if(this.nick_name == null || this.nick_name == ""){
+            this.alert_chk("닉네임 을");
+            return false;
+        }
+        if(this.phone_number == null || this.phone_number ==""){
+          this.alert_chk("휴대폰 번호 를");
+          return false;
+        }
+        if(!this.$phoneNumberValidation(this.phone_number)){
+            this.alert_chk("휴대폰 번호 형식 을");
+            return false;
+        }
+
+        let param  = {
+              "email" : this.email ,
+              "password" : this.password ,
+              "name" : this.user_name ,
+              "nickName" : this.nick_name,
+              "gender" : this.gender,
+              "phoneNumber" : this.phone_number
+        }
+        this.loading = true;
+        this.$axios.post(process.env.VUE_APP_TRIP_JOIN ,param).then(res =>{
+          console.log(res);
+        }).catch((error) => {
+             this.$swal('',error.response.data.result,'error');
+        }).finally(() => {
+          this.loading = false;
+        });
+
+      },
+      backClick() {
+        this.$router.push("/");
+      },
+
+      pw_chk(value) {
+            return this.$passwordValidation(value);  
+      },
+      
+      alert_chk(value) {
+          this.$swal('',
+              value+' 확인해주세요',
+                  'error');
+      }
+
+  },
+  watch : {
+    email() {
+      this.email_chk = this.$emailValidation(this.email);  
+    },
+    password() {
+       this.pw_valid_chk = (this.pw_chk(this.password)&&this.pw_chk(this.password_chk));
+       this.pw_equal_chk = this.password == this.password_chk;
+    },
+    password_chk() {
+     this.pw_valid_chk = (this.pw_chk(this.password)&&this.pw_chk(this.password_chk));
+     this.pw_equal_chk = this.password == this.password_chk;
+    },
+    phone_number() {
+      this.phone_number = this.phone_number.replace(/[^0-9]/g, '');
+      this.phone_number = this.$phoneNumberGetMask(this.phone_number);
+    }
+
+  },
+
+}
+
+
+</script>
+
+
+
+
 
 <style>
   .ars {
@@ -150,19 +257,3 @@
       }
 </style>
 
-<script>
-export default {
-	data: function () {
-    return {
-    }
-  },
-  methods: {
-      backClick() {
-        this.$router.push("/");
-      }
-  }
-
-}
-
-
-</script>
