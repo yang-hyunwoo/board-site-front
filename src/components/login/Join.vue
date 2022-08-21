@@ -135,7 +135,7 @@ export default {
         this.loading = true;
 
         this.$axios.post(process.env.VUE_APP_TRIP_JOIN ,param).then(() =>{
-            // this.$router.push();
+              this.$router.push("/loginSuccess");
         }).catch((error) => {
              this.$swal('',error.response.data.result,'error');
         }).finally(() => {

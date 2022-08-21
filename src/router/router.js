@@ -19,7 +19,12 @@ const routes = [
       {
         path: '/travelDetail',
         name: 'travelDetail',
-        component: ()=> import('@/components/travel/travelDetail.vue'),
+        component: ()=> import('@/components/travel/TravelDetail.vue'),
+       },
+       {
+        path: '/travelPaymentIng',
+        name: 'travelPaymentIng',
+        component: ()=> import('@/components/travel/TravelPaymentIng.vue'),
        },
       {
         path: '/article',
@@ -36,6 +41,7 @@ const routes = [
       name: 'articleWrite',
       component: ()=> import('@/components/article/ArticleWrite.vue'),
      },
+     
   ],
   },
   {
@@ -52,7 +58,12 @@ const routes = [
           path: '/join',
           name: 'join',
           component: ()=> import('@/components/login/Join'),
-      },
+        },        
+        {
+          path: '/loginSuccess',
+          name: 'loginSuccess',
+          component: ()=> import('@/components/login/LoginSuccess'),
+        },
     ],
 },
 
