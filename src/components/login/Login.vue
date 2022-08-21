@@ -3,49 +3,80 @@
  <!-- <body class="text-center">
 <main class="form-signin w-100 m-auto">  -->
     <div class="ares">
-  <form>
-    <img class="mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+  <!-- <form  @submit="login"> -->
+    <div>
+<img class="mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+    <h1 class="h3 mb-3 fw-normal">로그인</h1>
 
     <div class="form-floating">
       <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" v-model="email">
       <label for="floatingInput">Email address</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" v-model="password">
       <label for="floatingPassword">Password</label>
     </div>
 
     <div class="checkbox mb-4 matop" >
-      <label>
+      <!-- <label>
         <input type="checkbox" value="remember-me"> Remember me
-      </label>
+      </label> -->
     </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    <button class="w-100 btn btn-lg btn-primary" @click="login" >로그인</button>
     <p class="mt-3" @click="join" ><a style="text-decoration: underline; cursor: pointer;">회원이 아니신가요?</a></p>
     <p class="mt-3" @click="pwChk"><a style="text-decoration: underline; cursor: pointer;">비밀번호 찾기</a></p>
-  </form>
+  <!-- </form> -->
   </div>
-<!-- </main>
-
-
-    
-  </body> -->
+  </div>
+ <BlackBg v-if="loading"></BlackBg>
 </template>
 
 <script>
+import BlackBg from "../loading/BlackBg"
+
 export default {
+  components: {
+    BlackBg
+  },
 	data: function () {
     return {
-      email:""
+      email:"",
+      password:"",
+      loading:false,
     }
   },
   methods: {
       join() {
         this.$router.push("/join");
       },
+      login() {
+          if(this.email ==null || this.email == ""){
+                  this.$swal('', "아이디를 입력해주세요.",'waring');
+                  return ;
+          }
+          if(this.password ==null || this.password == ""){
+                  this.$swal('', "비밀번호를 입력해주세요.",'waring');
+                  return ;
+          }
+          let param = {
+                  "email" : this.email ,
+                  "password" : this.password 
+          }
+          this.loading = true;
+
+        this.$axios.post(process.env.VUE_APP_TRIP_LOGIN ,param).then((res) =>{
+          alert(res.data.result.token);
+            localStorage.setItem("token",res.data.result.token);
+            this.$router.push("/");
+        }).catch((error) => {
+          console.log(error);
+             this.$swal('',error.response.data.result,'error');
+        }).finally(() => {
+          this.loading = false;
+        });
+      },
       pwChk() {
-        alert("비밀번호")
+        alert("추후 예정");
       }
 
   }
