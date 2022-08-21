@@ -1,6 +1,9 @@
 <template>
     <ToastViewer :articleId="articleId" :contentType="contentType" ></ToastViewer>
-        {{articleId}}
+<div class="d-grid gap-2 col-6 mx-auto">
+  <br>
+  <button class="btn btn-primary" type="button" @click="reserve">예약하기</button>
+</div>
 </template>
 
 
@@ -11,19 +14,26 @@
 export default {
 	data: function () {
     return {
-        articleId:0,
-        contentType:'',
+        articleId    : 0,
+        contentType  : '',
+        travelDetail : this.$route.query.sn,
     }
   },
   components :{
         ToastViewer
   },
   created(){
-    this.articleId=1;
-    this.contentType ="article"
-    console.log("111");
+    this.articleId=this.travelDetail;
+    this.contentType ="travel"
   },    
   methods: {
+    reserve(){
+      this.$router.push({
+        path: "/travelPaymentIng",
+        name: "travelPaymentIng",
+        query: { sn: this.articleId }
+      });
+    }
 
   }
 

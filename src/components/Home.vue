@@ -75,30 +75,15 @@
     </button>
   </div>
 
-<button @Click="aaa">ddd</button>
 <div class="container marketing mgt">
-
-    <!-- Three columns of text below the carousel -->
+    <p>추천 여행사</p>
     <div class="row">
-      <div class="col-lg-4">
-        <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-
-        <h2 class="fw-normal">여행사</h2>
-        <p>여행사 설명</p>
-        <p><a class="btn btn-secondary" href="#">여행사 여행 리스트2</a></p>
-      </div><!-- /.col-lg-4 -->
-      <div class="col-lg-4">
-        <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-
-        <h2 class="fw-normal">여행사2</h2>
-        <p>여행사 설명2</p>
-        <p><a class="btn btn-secondary" href="#">여행사 여행 리스트2</a></p> </div><!-- /.col-lg-4 -->
-      <div class="col-lg-4">
-        <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-
-        <h2 class="fw-normal">여행사</h2>
-        <p>여행사 설명2</p>
-        <p><a class="btn btn-secondary" href="#">여행사 여행 리스트2</a></p> </div><!-- /.col-lg-4 -->
+      <div class="col-lg-4" v-for="(item,index) of agency_random_list" :key="index">
+       <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
+        <h2 class="fw-normal">{{item.name}}</h2>
+        <p>{{item.detail}}</p>
+        <p><a class="btn btn-secondary" @click="test">{{item.name}} 여행사 둘러보기</a></p>
+      </div>
     </div><!-- /.row -->
 
 
@@ -113,7 +98,6 @@
       </div>
       <div class="col-md-5">
         <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-
       </div>
     </div>
 
@@ -162,14 +146,67 @@ export default {
     return {
       login  : login ,
       index : 0,
-      chk :false
+      chk :false,
+      agency_random_list : [],
     }
   },
+
   created(){
     this.index = 0;
     this.chk = true;
+    this.init();
   },
+
   methods: {
+
+    init() {
+      this.travelAgencyRandom();
+    },
+
+    travelAgencyRandom() {
+        this.$axios.get(process.env.VUE_APP_TRIP_AGENCY_RANDOM).then((res) =>{
+          if(res.data.resultCode=="SUCCESS"){
+            this.agency_random_list=[];
+            res.data.result.forEach(element => {
+              let obj = [];
+              obj.name      = element.name;
+              obj.agency_id = element.id;
+              obj.detail    = element.detail.substr(0,20)+".....";
+
+              this.agency_random_list.push(obj);
+            });
+          }
+        }).catch(() => {
+             this.$swal('','잠시후 다시 이용해주세요.','error');
+        }).finally(() => {
+        });
+    },
+
+
+
+
+
+
+
+
+    test() {
+    const headers = {
+      'Authorization': 'Bearer ' + localStorage.getItem("token")
+    }
+    // let param = {
+    //   "title": "test",
+    //   "content" : "Test"
+    // }
+    this.$axios.get("/api/trip/articles/1" ,this.$tokenCheck()==true?{headers}:"").then(() =>{
+            // this.$router.push();
+        }).catch((error) => {
+             this.$swal('',error.response.data.result,'error');
+        }).finally(() => {
+          this.loading = false;
+        });
+
+        alert("111");
+    },
     aaa() {
       // var IMP = window.IMP;
       // IMP.init(process.env.VUE_APP_IAMPORT);
@@ -208,7 +245,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;

@@ -28,12 +28,13 @@
 <script>
 export default {
   props :{
-    pageListItem: Number
+    pageListItem: Number,
+    pageTotal: Number
   }, 
 	data: function () {
     return {
     ex4CurrentPage:1,
-    ex4Rows:200,
+    ex4Rows:this.pageTotal,
     perPage : this.pageListItem
     }
   },
@@ -42,7 +43,7 @@ export default {
   methods: {
     pageClick: function (button, page){ 
          this.ex4CurrentPage = page;
-         console.log(this.ex4CurrentPage);
+        this.$emit("pageCurrent",this.ex4CurrentPage);
       // this.getNoticeListByPage(page);
 			},
 			// getNoticeListByPage: function (page) {

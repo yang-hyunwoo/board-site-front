@@ -77,7 +77,7 @@
 import BlackBg from "../loading/BlackBg"
 
 export default {
-    components: {
+  components: {
     BlackBg
   },
 	data: function () {
@@ -124,16 +124,18 @@ export default {
         }
 
         let param  = {
-              "email" : this.email ,
-              "password" : this.password ,
-              "name" : this.user_name ,
-              "nickName" : this.nick_name,
-              "gender" : this.gender,
+              "email"       : this.email ,
+              "password"    : this.password ,
+              "name"        : this.user_name ,
+              "nickName"    : this.nick_name,
+              "gender"      : this.gender,
               "phoneNumber" : this.phone_number
         }
+
         this.loading = true;
-        this.$axios.post(process.env.VUE_APP_TRIP_JOIN ,param).then(res =>{
-          console.log(res);
+
+        this.$axios.post(process.env.VUE_APP_TRIP_JOIN ,param).then(() =>{
+            // this.$router.push();
         }).catch((error) => {
              this.$swal('',error.response.data.result,'error');
         }).finally(() => {
@@ -150,9 +152,7 @@ export default {
       },
       
       alert_chk(value) {
-          this.$swal('',
-              value+' 확인해주세요',
-                  'error');
+          this.$swal('', value+' 확인해주세요','error');
       }
 
   },
