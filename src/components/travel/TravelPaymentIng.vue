@@ -1,0 +1,166 @@
+<template>
+
+ <div class="py-4 text-center">
+      <img class="d-block mx-auto mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+      <h2>{{travel_name}}</h2>
+    </div>
+    <div>
+    <div class="row g-5 juscustom" >
+      <div class="col-md-7 col-lg-8" style="margin-left:0.5rem;">
+
+          <div class="row g-3">
+            <div class="col-11">
+             <label for="email" class="form-label" >이름 </label>
+              <input type="email" v-model="user_name" class="form-control"  placeholder="홍길동" >
+            </div>
+
+            <div class="col-11">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" v-model="email" class="form-control" id="email" placeholder="you@example.com" >
+            </div>
+            <div class="col-11">
+                인원 :    <button @click="minus" class="btn-cl" style="font-size:20px;">-</button><input type=number name=amount v-model="total_count" style="width:8%;"><button class="btn-cl" style="font-size:20px;" @click="plus">+</button>
+                </div>
+          </div>
+
+          <hr class="my-4">
+            
+          <div class="form-check">
+                주문 금액 :{{$numberWithCommas(init_sale_pay)}}원
+          </div>
+           <hr class="my-4">
+            <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="save-info" v-model="pay_chk">
+            <label class="form-check-label" for="save-info">결제에 동의</label>
+          </div>
+          <br>
+          <button class="w-100 btn btn-primary btn-lg" @click="iamport">결제하기</button>
+
+    </div>
+    </div>
+</div>
+</template>
+
+<script>
+export default {
+	data: function () {
+    return {
+        user_name : "",
+        email : "",
+        total_count: 1,
+        travel_name: "",
+        travel_id : this.$route.query.sn,
+        real_pay : 0 ,
+        sale_pay : 0,
+        init_sale_pay : 0,
+        pay_chk:false,
+    }
+  },
+
+  created(){
+    if(this.travel_id == null ||this.travel_id== undefined || this.travel_id== "null" ||this.travel_id == "undefined") {
+        history.back(-1);
+    }
+    this.init();
+
+  },
+
+  methods: {
+    init() {
+        this.traveDetail();
+    },
+
+    traveDetail() {
+    this.$axios.get(process.env.VUE_APP_TRAVEL_DETAIL+this.travel_id).then((res) =>{
+          if(res.data.resultCode=="SUCCESS"){
+            let data = res.data.result ; 
+            this.travel_name   = data.title ;
+            this.real_pay      = data.real_paid ;
+            this.sale_pay      = data.sale_paid ;
+            this.init_sale_pay = data.sale_paid ;
+          }
+        }).catch(() => {
+             this.$swal('','잠시후 다시 이용해주세요.','error');
+        }).finally(() => {
+        });
+    },
+
+    iamport() {
+        if(this.pay_chk) {
+            var IMP = window.IMP;
+            IMP.init(process.env.VUE_APP_IAMPORT);
+            IMP.request_pay({ // param
+                    pg: "html5_inicis",
+                    pay_method: "card",
+                    name: this.travel_name,
+                    amount: this.init_sale_pay,
+                    buyer_email: this.email,
+                    buyer_name: this.user_name,
+            }, rsp => { // callback
+                if (rsp.success) {
+                    console.log(rsp);
+                    // 결제 성공 시 로직,
+                } else {
+                    console.log(rsp);
+                    // 결제 실패 시 로직,
+                }
+            });
+        } else {
+            this.$swal('','결제 동의에 체크 해주세요.','waring')
+        }
+
+
+    },
+
+    minus() {
+        this.total_count--;
+    },
+
+    plus() {
+        this.total_count++;
+    }
+
+  },
+
+watch: {
+    total_count(){
+          if(this.total_count < 1){
+             this.$swal('','1이하로는 입력할수 없습니다.','error');
+             this.total_count=1;
+            return ;
+          }
+          if(this.total_count >100) {
+             this.$swal('','100이상로는 입력할수 없습니다.','error');
+             this.total_count = 1;
+             return ;
+          }
+            this.init_sale_pay   = (this.sale_pay * this.total_count);
+    },
+}
+
+
+}
+</script>
+<style scoped>
+ .juscustom{
+    justify-content: center;
+    /* margin-left:0.rem; */
+}
+.btn-cl {
+    background-color: rgba(0,0,0,0);
+    color: skyblue;
+    border: 0px ;
+    width : 15%;
+} 
+.col-11 {
+    margin-bottom: 0.8rem;
+}
+.row {
+    --bs-gutter-x : 0 !important;
+    --bs-gutter-y : 0 !important;
+}
+.deco{
+  text-decoration: line-through;
+}
+
+</style>
