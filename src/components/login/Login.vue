@@ -65,7 +65,6 @@ export default {
           this.loading = true;
 
         this.$axios.post(process.env.VUE_APP_TRIP_LOGIN ,param).then((res) =>{
-          alert(res.data.result.token);
             localStorage.setItem("token",res.data.result.token);
             this.$router.push("/");
         }).catch((error) => {

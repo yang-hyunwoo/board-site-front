@@ -39,6 +39,7 @@
     </div>
     </div>
 </div>
+ <BlackBg v-if="loading"></BlackBg>
 </template>
 
 <script>
@@ -49,16 +50,18 @@ export default {
         email : "",
         total_count: 1,
         travel_name: "",
-        travel_id : this.$route.query.sn,
+        travel_list_id : this.$route.query.sn,
+        travel_id : "",
         real_pay : 0 ,
         sale_pay : 0,
         init_sale_pay : 0,
         pay_chk:false,
+        loading:false,
     }
   },
 
   created(){
-    if(this.travel_id == null ||this.travel_id== undefined || this.travel_id== "null" ||this.travel_id == "undefined") {
+    if(this.travel_list_id == null ||this.travel_list_id== undefined || this.travel_list_id== "null" ||this.travel_list_id == "undefined") {
         history.back(-1);
     }
     this.init();
@@ -71,13 +74,15 @@ export default {
     },
 
     traveDetail() {
-    this.$axios.get(process.env.VUE_APP_TRAVEL_DETAIL+this.travel_id).then((res) =>{
+    this.$axios.get(process.env.VUE_APP_TRAVEL_DETAIL+this.travel_list_id).then((res) =>{
           if(res.data.resultCode=="SUCCESS"){
+            console.log(res);
             let data = res.data.result ; 
-            this.travel_name   = data.title ;
-            this.real_pay      = data.real_paid ;
-            this.sale_pay      = data.sale_paid ;
-            this.init_sale_pay = data.sale_paid ;
+            this.travel_name    = data.title ;
+            this.real_pay       = data.real_paid ;
+            this.sale_pay       = data.sale_paid ;
+            this.init_sale_pay  = data.sale_paid ;
+            this.travel_id      = data.travel_agency_id ;
           }
         }).catch(() => {
              this.$swal('','잠시후 다시 이용해주세요.','error');
@@ -87,6 +92,7 @@ export default {
 
     iamport() {
         if(this.pay_chk) {
+          // this.init_sale_pay
             var IMP = window.IMP;
             IMP.init(process.env.VUE_APP_IAMPORT);
             IMP.request_pay({ // param
@@ -98,18 +104,37 @@ export default {
                     buyer_name: this.user_name,
             }, rsp => { // callback
                 if (rsp.success) {
-                    console.log(rsp);
-                    // 결제 성공 시 로직,
+                      const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")
+            }
+            let param = {
+               "travelAgencyId": this.travel_id,
+               "travelAgencyListId" : this.travel_list_id,
+               "merchantUid"  : rsp.merchant_uid,
+               "impUid" : rsp.imp_uid,
+               "payEmail" : this.email,
+               "payName" : this.user_name,
+               "paid"    : rsp.paid_amount,
+               "personCount" : this.total_count
+            }
+               this.loading = true;
+               this.$axios.post(process.env.VUE_APP_TRAVEL_PAY ,param,{headers}).then((res) =>{
+                    if(!res.data.result) {
+                        this.$router.push("/travelPaymentSuccess");
+                    } else {
+                        this.$swal('스크립트 변조',"결제 금액이 다릅니다.\n 환불 관련은 관리자에게 문의 하세요.","error");
+                    }
+                }).catch((error) => {
+                    this.$swal('',error.response.data.result,'error');
+                }).finally(() => {
+                    this.loading = false;
+                });
                 } else {
-                    console.log(rsp);
-                    // 결제 실패 시 로직,
+                    //결제 실패
                 }
             });
         } else {
             this.$swal('','결제 동의에 체크 해주세요.','waring')
         }
-
-
     },
 
     minus() {
