@@ -1,4 +1,6 @@
 <template>
+<!-- 여행 리스트 -->
+<div v-if="props.contentType=='travel'">
 <div class="margincustom margintpcust">
     <h2>{{title}}</h2>
 </div>
@@ -8,10 +10,27 @@
 <div class="margincustom">
   <span style="font-size:13px;">마감일 : {{travel_end_at}}</span> <span style="font-size:13px; color: gray;">조회수:{{read_count}}</span>
 </div>
+</div>
+<!-- 여행 리스트 -->
+
+
+<!-- 게시판 -->
+<div v-if="props.contentType=='article'">
+<div class="margincustom margintpcust">
+    <h2>{{title}}</h2>
+</div>
+<div class="margincustom">
+  {{nickname}} 
+</div>
+<div class="margincustom">
+  <span style="font-size:13px;">등록일 : {{created_at}}</span> <span style="font-size:13px; color: gray;">조회수:{{read_count}}</span>
+</div>
+</div>
+<!-- 게시판 -->
 
 
   <div ref="refEditor" class="margincustom margintpcust"></div>
-  <div class="margincustom">
+  <div class="margincustom" v-if="props.contentType=='travel'">
   <span style="font-size:15px;">가격:<span class="deco" >{{$numberWithCommas(real_pay)}}</span><span style="color:red; margin-left: 1rem;">{{sale_percent}}</span> <span style="margin-left:1rem;">{{$numberWithCommas(sale_paid)}}</span></span>
 </div>
 </template>
@@ -43,6 +62,9 @@ const travel_end_at = ref("");
 const real_pay = ref("");
 const sale_percent = ref("");
 const sale_paid = ref("");
+const nickname = ref("");
+const created_at = ref("");
+
 
 
 onMounted( async () => { 
@@ -57,7 +79,7 @@ onMounted( async () => {
             title.value          = res.data.result.title;
             travel_name.value    = res.data.result.travelAgencyName;
             read_count.value     = res.data.result.read_count;
-            travel_end_at.value  = res.data.result.travel_end_at.substr(0,4)+"-"+res.data.result.travel_end_at.substr(4,2)+"-"+res.data.result.travel_end_at.substr(6);
+            travel_end_at.value  = res.data.result.travel_end_at.substr(0,4)+"."+res.data.result.travel_end_at.substr(4,2)+"."+res.data.result.travel_end_at.substr(6);
             real_pay.value       = res.data.result.real_paid+" 원";
             sale_percent.value   = res.data.result.sale_percent+" %";
             sale_paid.value      = res.data.result.sale_paid+" 원";
@@ -68,6 +90,21 @@ onMounted( async () => {
         });
   }
 
+  if(props.contentType=="article") {
+    await axios.get(process.env.VUE_APP_ARTICLE_DETAIL+props.articleId).then((res) =>{
+        console.log(res);
+          if(res.data.resultCode=="SUCCESS"){
+            content              = res.data.result.content;
+            title.value          = res.data.result.title;
+            nickname.value    = res.data.result.nickName;
+            read_count.value     = res.data.result.readCount;
+            created_at.value  = res.data.result.createdAt.substr(0,4)+"."+res.data.result.createdAt.substr(5,2)+"."+res.data.result.createdAt.substr(8,2);
+          }
+        }).catch(() => {
+            alert("잠시 후 다시 시도해주세요.");
+        }).finally(() => {
+        });
+  }
 
    const xeditor = new Viewer({
     el: refEditor.value,

@@ -1,6 +1,8 @@
 <template>
     <ToastViewer :articleId="articleId" :contentType="contentType" ></ToastViewer>
-        {{articleId}}
+    <div>
+      댓글 영역으로 잡는다.
+    </div>
 <button @click="ssss">수정</button>
 <button @click="ssss2">삭제</button>
 </template>
@@ -15,15 +17,15 @@ export default {
     return {
         articleId:0,
         contentType:'',
+        articleDetail : this.$route.query.sn,
     }
   },
   components :{
         ToastViewer
   },
   created(){
-    this.articleId=1;
+    this.articleId=this.articleDetail;
     this.contentType ="article"
-    console.log("111");
   },    
   methods: {
 
