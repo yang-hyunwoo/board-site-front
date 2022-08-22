@@ -70,9 +70,12 @@ export default{
         }
 
         Vue.config.globalProperties.$splitDateHyphen = function(data) {
-            return data.substr(0,4)+"-"+data.substr(4,2)+"-"+data.substr(6);
+            return data.substr(0,4)+"."+data.substr(4,2)+"."+data.substr(6);
         }
 
+        Vue.config.globalProperties.$splitDateHyphenLo = function(data) {
+            return data.substr(0,4)+"."+data.substr(5,2)+"."+data.substr(8,2);
+        }
         Vue.config.globalProperties.$numberWithCommas = function(data) {
             return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }

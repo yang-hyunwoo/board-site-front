@@ -38,7 +38,7 @@
       </div>
     </div>
   </div>
-
+ <BlackBg v-if="loading"></BlackBg>
 <Pagination v-if="pageChk" :pageListItem="pageListItem" @pageCurrent="pageCurr" :pageTotal="pageTotal"></Pagination>
 </template>
 
@@ -53,10 +53,11 @@ export default {
       pageTotal : 0 ,
       pageChk : false ,
       travel_list : [] ,
+       loading:false,
     }
   },
   components: {
-    Pagination
+    Pagination,
   },
   created() {
 
@@ -76,7 +77,7 @@ export default {
         "page" : this.page,
         "travelAgencyTitleName" : this.travel_title
       }
-
+      this.loading = true;
       this.$axios.get(process.env.VUE_APP_TRAVEL_LIST,{params:parameter}).then((res) =>{
          if(res.data.resultCode=="SUCCESS"){
           this.pageTotal = res.data.result.totalElements;
@@ -99,6 +100,7 @@ export default {
              this.$swal('','잠시후 다시 이용해주세요.','error');
         }).finally(() => {
           this.pageChk = true;
+          this.loading = false;
         });
     },
 
