@@ -64,6 +64,11 @@ const routes = [
           name: 'loginSuccess',
           component: ()=> import('@/components/login/LoginSuccess'),
         },
+        {
+          path: '/travelPaymentSuccess',
+          name: 'travelPaymentSuccess',
+          component: ()=> import('@/components/travel/TravelPaymentSuccess.vue'),
+        },
     ],
 },
 

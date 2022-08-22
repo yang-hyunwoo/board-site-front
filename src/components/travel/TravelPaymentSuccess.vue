@@ -2,8 +2,8 @@
 <template >
     <div class="ares">
     <div>
-            <img class="mb-4" v-bind:src= "success"  width="72" height="57">
-    <h1 class="h5 mb-3 fw-normal">회원가입이 완료되었습니다.<br>가입하신 이메일로 <br>인증을 완료해주세요.</h1>
+        <img class="mb-4" v-bind:src= "success"  width="72" height="57">
+           <h1 class="h5 mb-3 fw-normal">정상적으로 결제가 완료 되었습니다.<br>감사합니다.</h1>
 
     <button class="w-100 btn btn-lg btn-primary" @click="confirm" >확인</button>
   </div>
