@@ -12,6 +12,7 @@
  import ToastViewer from '@/components/editor/ToastViewer.vue'
 
 export default {
+  
 	data: function () {
     return {
         articleId    : 0,
@@ -23,7 +24,7 @@ export default {
         ToastViewer
   },
   created(){
-    this.articleId=this.travelDetail;
+    this.articleId=Number(this.travelDetail);
     this.contentType ="travel"
   },    
   methods: {

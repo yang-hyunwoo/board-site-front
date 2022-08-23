@@ -46,22 +46,6 @@ export default {
         this.$emit("pageCurrent",this.ex4CurrentPage);
       // this.getNoticeListByPage(page);
 			},
-			// getNoticeListByPage: function (page) {
-      //           var limit = 20;
-      //           var offset = (page - 1) * limit;
-
-      //           this.loading = true;
-      //           this.$http
-      //               .get('/notice/list' + `?offset=${offset}&limit=${limit}`)
-      //               .then(response => {
-      //                   this.items = response.data;
-      //               })
-      //               .catch(error => {
-      //                   console.log(error);
-      //               })
-      //               .finally(() => this.loading = false);
-			// }
-
   }
 
 }

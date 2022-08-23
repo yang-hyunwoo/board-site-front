@@ -64,13 +64,19 @@ const sale_percent = ref("");
 const sale_paid = ref("");
 const nickname = ref("");
 const created_at = ref("");
+// const emit =   defineEmits(['contentChange']);
 
-
-
+function tokenChk() {
+  let token = localStorage.getItem("token");
+      if(token == null || token.length==0 || token == "null" || token == "undefined" || token ==undefined) {
+          return false;
+      } 
+          return true;
+}
 onMounted( async () => { 
    console.log("onMounted")
-   console.log(props.articleId);
-   console.log(props.contentType);
+  //  console.log(props.articleId);
+  //  console.log(props.contentType);
    
   if(props.contentType=="travel") {
       await axios.get(process.env.VUE_APP_TRAVEL_DETAIL+props.articleId).then((res) =>{
@@ -85,23 +91,28 @@ onMounted( async () => {
             sale_paid.value      = res.data.result.sale_paid+" 원";
           }
         }).catch(() => {
-            alert("잠시 후 다시 시도해주세요.");
+           history.back(-1);
         }).finally(() => {
         });
   }
 
   if(props.contentType=="article") {
-    await axios.get(process.env.VUE_APP_ARTICLE_DETAIL+props.articleId).then((res) =>{
-        console.log(res);
+    const headers = {
+      'Authorization': 'Bearer ' + localStorage.getItem("token")
+    }
+
+
+    await axios.get(process.env.VUE_APP_ARTICLE_DETAIL+props.articleId,tokenChk()==true?{headers}:"").then((res) =>{
           if(res.data.resultCode=="SUCCESS"){
             content              = res.data.result.content;
             title.value          = res.data.result.title;
             nickname.value    = res.data.result.nickName;
             read_count.value     = res.data.result.readCount;
             created_at.value  = res.data.result.createdAt.substr(0,4)+"."+res.data.result.createdAt.substr(5,2)+"."+res.data.result.createdAt.substr(8,2);
+            // emit('contentChange',res.data.result.articleCommentResponses);
           }
         }).catch(() => {
-            alert("잠시 후 다시 시도해주세요.");
+           history.back(-1);
         }).finally(() => {
         });
   }

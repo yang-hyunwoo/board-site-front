@@ -78,7 +78,6 @@ export default {
     traveDetail() {
     this.$axios.get(process.env.VUE_APP_TRAVEL_DETAIL+this.travel_list_id).then((res) =>{
           if(res.data.resultCode=="SUCCESS"){
-            console.log(res);
             let data = res.data.result ; 
             this.travel_name    = data.title ;
             this.real_pay       = data.real_paid ;

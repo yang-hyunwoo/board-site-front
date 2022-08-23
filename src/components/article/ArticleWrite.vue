@@ -1,6 +1,11 @@
 <template>
+<div class="input-group mb-3" style="margin-top:1rem;">
+  <input type="text" v-model="title" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="제목을 입력해주세요.">
+</div>
     <ToastEditor  @contentChange="editorContent"></ToastEditor>
-<button @click="regArticle">등록</button>
+    <div style="display:flex; justify-content:end;">
+    <button type="button" class="btn btn-primary" @click="regArticle">등록</button>
+    </div>
 </template>
 
 
@@ -12,22 +17,47 @@ export default {
 	data: function () {
     return {
         articleId:0,
-        contentChange:''
+        contentChange:'',
+        title:"",
     }
   },
   components :{
         ToastEditor
   },
   created(){
-    this.articleId=1;
-    console.log("111");
   },    
   methods: {
         editorContent(value){
             this.contentChange =  value;
         },
         regArticle(){
-            console.log(this.contentChange);
+             const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")}
+            var content = this.contentChange;
+            content = content.replace(/&nbsp;/gi,"");
+            content = content.replace(/<br>/gi,"");
+            content = content.replace(/ /gi,"");
+
+            if(this.title==null || this.title==""){
+                this.$swal('','제목을 입력해주세요.','warning');
+            }
+            if(content =="<p><\/p>" || content==""){
+                this.$swal('','내용을 입력해주세요.','warning');
+            }
+            
+            let param = {
+                "title"  : this.title ,
+                "content" : this.contentChange
+            }
+            this.$axios.post(process.env.VUE_APP_ARTICLE_INSERT ,param,{headers}).then((res) =>{
+                if(res.data.resultCode=="SUCCESS"){
+                    this.$swal('',"저장되었습니다.",'success');
+                    this.$router.push("/article"); 
+                }
+        }).catch(() => {
+            //  this.$swal('',error.response.data.result,'error');
+        }).finally(() => {
+        //   this.loading = false;
+        });
         }
   }
 
