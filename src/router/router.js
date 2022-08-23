@@ -17,9 +17,9 @@ const routes = [
           component: ()=> import('@/components/travel/TravelList.vue'),
       },
       {
-        path: '/travelDetails',
-        name: 'travelDetails',
-        component: ()=> import('@/components/travel/TravelDetails.vue'),
+        path: '/travelDetail',
+        name: 'travelDetail',
+        component: ()=> import('@/components/travel/TravelDetail.vue'),
        },
        {
         path: '/travelPaymentIng',
