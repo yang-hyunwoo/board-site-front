@@ -41,6 +41,11 @@ const routes = [
       name: 'articleWrite',
       component: ()=> import('@/components/article/ArticleWrite.vue'),
      },
+     {
+      path: '/articleModify',
+      name: 'articleModify',
+      component: ()=> import('@/components/article/ArticleModify.vue'),
+     },
      
   ],
   },

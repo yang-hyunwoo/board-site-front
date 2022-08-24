@@ -148,6 +148,7 @@ export default {
       index : 0,
       chk :false,
       agency_random_list : [],
+      aa:"",
     }
   },
 

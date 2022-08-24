@@ -50,11 +50,11 @@ export default {
         this.$router.push("/join");
       },
       login() {
-          if(this.email ==null || this.email == ""){
+          if(this.$emptyChk(this.email)){
                   this.$swal('', "아이디를 입력해주세요.",'waring');
                   return ;
           }
-          if(this.password ==null || this.password == ""){
+          if(this.$emptyChk(this.password)){
                   this.$swal('', "비밀번호를 입력해주세요.",'waring');
                   return ;
           }

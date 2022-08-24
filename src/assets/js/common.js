@@ -84,5 +84,19 @@ export default{
         Vue.config.globalProperties.$numberWithCommas = function(data) {
             return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
+
+        Vue.config.globalProperties.$emptyChk = function(data) {
+            var blank_pattern = /^\s+|\s+$/g;
+            if( data.replace( blank_pattern, '' ) == "" ){
+                return true;
+            }else if( data == "" || 
+                data == null || 
+                data == undefined || 
+                ( data != null && typeof value == "object" && !Object.keys(data).length ) ){
+                return true
+              } else{
+                return false
+              }
+        }
     }
 }

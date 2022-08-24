@@ -106,15 +106,15 @@ export default {
           this.alert_chk("비밀번호 를");
           return false;
         }
-        if(this.user_name == null || this.user_name == ""){
+        if(this.$emptyChk(this.user_name)){
             this.alert_chk("이름 을");
             return false;
         }
-        if(this.nick_name == null || this.nick_name == ""){
+        if(this.$emptyChk(this.nick_name)){
             this.alert_chk("닉네임 을");
             return false;
         }
-        if(this.phone_number == null || this.phone_number ==""){
+        if(this.$emptyChk(this.phone_number)){
           this.alert_chk("휴대폰 번호 를");
           return false;
         }
@@ -153,6 +153,7 @@ export default {
       
       alert_chk(value) {
           this.$swal('', value+' 확인해주세요','error');
+          return;
       }
 
   },
