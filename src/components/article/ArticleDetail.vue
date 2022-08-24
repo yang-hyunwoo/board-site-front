@@ -88,11 +88,15 @@ export default {
                 obj.upd_chk     = false;
                 this.reply.push(obj);
             });
+            if(this.pageTotal==0){
+              this.pageChk = false;
+            }else {
+              this.pageChk = true;
+            }
           }
         }).catch((error) => {
              this.$swal('',error.response.data.result,'error');
         }).finally(() => {
-          this.pageChk = true;
           this.loading = false;
         });
       },
@@ -100,6 +104,7 @@ export default {
       comment_ins(value) {
         if(this.comment_reply_ins==""){
              this.$swal('','댓글을 입력해주세요.','warning');
+             return;
         }
         const headers = {
             'Authorization': 'Bearer ' + localStorage.getItem("token")
@@ -125,7 +130,7 @@ export default {
         this.init();
       },
 
-      comment_upd(value,index) {
+      comment_upd(index) {
         this.reply[index].upd_chk = !this.reply[index].upd_chk
         if(this.reply[index].upd_chk) {
           this.form.new_content[index] = this.reply[index].content;

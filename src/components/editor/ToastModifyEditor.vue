@@ -7,24 +7,35 @@ import "@toast-ui/editor/dist/toastui-editor.css"; // Editor's Style
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import Editor from "@toast-ui/editor";
 // import colorSyntax from '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
-import { ref, onMounted,defineEmits } from "vue";
+import { ref, onMounted,defineEmits,defineProps } from "vue";
 
 const emit =   defineEmits(['contentChange']);
 const refEditor = ref(null); // template의 ref의 값과 동일한 변수 선언
 const axios = require("axios");
+
+
+const props = defineProps({                     
+    content : {
+        type:String,
+        required : true
+    }
+});
+
 onMounted( () => { 
+  console.log(props.content);
    console.log("onMounted")
    const xeditor = new Editor({
     el: refEditor.value,
     height: "500px",
-    initialValue: "",             //init value 
+    initialValue: props.content,             //init value 
     initialEditType: "wysiwyg",
     previewStyle: "tab",
     useDefaultHTMLSanitizer: false,
     language:"ko-KR",
     usageStatistics: false,
     hideModeSwitch: true,   //밑에 창 
-    hooks: {
+    // TODO: 할것
+      hooks: {
     addImageBlobHook: (fileOrBlob, callback) => {
         const headers = {
           "content-type" : "multipart/form-data"
