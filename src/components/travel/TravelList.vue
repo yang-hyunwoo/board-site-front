@@ -1,13 +1,14 @@
 <template>
  <section class="py-5 text-center container">
-    <div class="row py-lg-5">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">여행 리스트</h1>
-        <p class="lead text-muted">나에게 맞는 여행을 찾아보세요</p>
-          <div>
-          <input class="form-control mr-sm-2 custombar" type="search" placeholder="제목을 입력해주세요." aria-label="Search" v-model="travel_title" v-on:keyup.enter="travelSearch">
+        <div class="row py-5">
+      <div class="col-lg-12 mx-auto">
+        <div class="text-white p-5 shadow-sm rounded banner">
+          <h1 class="display-4">여행 리스트</h1>
+          <p class="lead">나에게 맞는 여행을 찾아보세요</p>
+           <input class="form-control mr-sm-2 custombar" type="search" placeholder="제목을 입력해주세요." aria-label="Search" v-model="travel_title" v-on:keyup.enter="travelSearch">
           <button class="btn btn-outline-success my-2 my-sm-0" style="margin-left:1rem;" @click="travelSearch" >Search</button>
-            </div>
+    
+        </div>
       </div>
     </div>
   </section>
@@ -19,12 +20,14 @@
 
         <div class="col curcus" v-for="(item,index) of travel_list"   :key="index" @click="todoCclick(item.id)">
           <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            
+            <svg v-if="!item.img_chk" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/></svg>
+            <img v-if="item.img_chk" :src="item.img" class="bd-placeholder-img card-img-top" width="100%" height="225">
             <div class="card-body">
               <p class="card-text">{{item.title}}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                    <p>{{item.name}}</p>
+                    <p>{{item.name}} ({{item.city}})</p>
                 </div>
                     <small class="text-muted">조회 : {{item.read_count}}</small>
               </div>
@@ -44,6 +47,7 @@
 
 <script>
 import Pagination from '../layout/Pagination';
+import BlackBg from "../loading/BlackBg"
 export default {
 	data: function () {
     return {
@@ -58,6 +62,7 @@ export default {
   },
   components: {
     Pagination,
+    BlackBg
   },
   created() {
 
@@ -80,6 +85,7 @@ export default {
       this.loading = true;
       this.$axios.get(process.env.VUE_APP_TRAVEL_LIST,{params:parameter}).then((res) =>{
          if(res.data.resultCode=="SUCCESS"){
+          console.log(res);
           this.pageTotal = res.data.result.totalElements;
             this.travel_list=[];
             res.data.result.content.forEach(element => {
@@ -87,12 +93,20 @@ export default {
                 obj.title         = element.title;
                 obj.name          = element.travelAgencyName;
                 obj.id            = element.id;
+                obj.city          = element.city;
                 obj.start_de      = this.$splitDateHyphen(element.travel_start_at);
                 obj.end_de        = this.$splitDateHyphen(element.travel_end_at);
                 obj.read_count    = element.read_count;
                 obj.real_pay      = element.real_paid+"원";
                 obj.sale_percent  = element.sale_percent+"%";
                 obj.sale_pay      = element.sale_paid+"원";
+                if(element.thumnbnailFileId ==null || element.thumnbnailFileId==""){
+                  obj.img_chk = false;
+                } else{
+                  obj.img_chk = true;
+                }
+                  obj.img     = process.env.VUE_APP_FILE_IMAGE_THUMB_READ+element.thumnbnailFileId+"/"+1;
+
                 this.travel_list.push(obj);
             });
           }
@@ -139,4 +153,13 @@ export default {
    cursor: pointer;
 }
 
+.banner {
+  background: #a770ef;
+  background: -webkit-linear-gradient(to right, #a770ef, #cf8bf3, #fdb99b);
+  background: linear-gradient(to right, #a770ef, #cf8bf3, #fdb99b);
+}
+.custombar{
+  width: 40%;
+  display: inline-block;
+}
 </style>

@@ -13,7 +13,7 @@
            <!-- <router-link class="nav-link font-color" to="/">홈</router-link> -->
         </li>
           <li class="nav-item">
-             <router-link class="nav-link font-color" to="/">여행사(구현 예정)</router-link>
+             <router-link class="nav-link font-color" to="/agencyList">여행사</router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link font-color" to="/travelList">여행 리스트</router-link>

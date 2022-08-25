@@ -1,5 +1,18 @@
 <template>
-    <ToastViewer :articleId="articleId" :contentType="contentType" @contentChange="editorContent"></ToastViewer>
+<div class="custom-div" v-if="auth_article">
+  <button class="btn-cl-cus-upd" @click="upd_click">수정</button><button  class="btn-cl-cus-del" @click="delete_click">삭제</button>
+</div>
+<div class="margincustom margintpcust">
+    <h2>{{title}}</h2>
+</div>
+<div class="margincustom">
+  {{nickname}} 
+</div>
+<div class="margincustom">
+  <span style="font-size:13px;">등록일 : {{created_at}}</span> <span style="font-size:13px; color: gray;">조회수:{{read_count}}</span>
+</div>
+
+    <ToastViewer v-if="detail_viewer" :content="content"></ToastViewer>
 <div class="margincustom">
     <div class="d-flex row">
         <div class="col-md-8">
@@ -49,9 +62,14 @@ export default {
         pageChk : false ,
         form: {
           new_content: []
-        }
-        
-
+        },
+        content:"",
+        title:"",
+        nickname:"",
+        read_count:"",
+        created_at:"",
+        auth_article:"",
+        detail_viewer: false,
     }
   },
   components :{
@@ -66,7 +84,12 @@ export default {
   },    
   methods: {
       init() {
-        const headers = {
+          this.comment_detail();
+          this.articleDetailAxios();
+      },
+
+      comment_detail() {
+                const headers = {
             'Authorization': 'Bearer ' + localStorage.getItem("token")
         }
         let parameter = {
@@ -101,6 +124,28 @@ export default {
         });
       },
 
+      articleDetailAxios() {
+          const headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+          }
+
+        this.$axios.get(process.env.VUE_APP_ARTICLE_DETAIL+this.articleId,this.$tokenCheck()==true?{headers}:"").then((res) =>{
+            if(res.data.resultCode=="SUCCESS"){
+              console.log(res.data.result.title);
+              this.content              = res.data.result.content;
+              this.title          = res.data.result.title;
+              this.nickname    = res.data.result.nickName;
+              this.read_count     = res.data.result.readCount;
+              this.created_at  = res.data.result.createdAt.substr(0,4)+"."+res.data.result.createdAt.substr(5,2)+"."+res.data.result.createdAt.substr(8,2);
+              this.auth_article   = res.data.result.authChk;
+            }
+          }).catch(() => {
+            history.back(-1);
+          }).finally(() => {
+              this.detail_viewer = true;
+          });
+      },
+
       comment_ins(value) {
         if(this.comment_reply_ins==""){
              this.$swal('','댓글을 입력해주세요.','warning');
@@ -127,7 +172,7 @@ export default {
 
       pageCurr(value){
         this.page = value-1;
-        this.init();
+        this.comment_detail();
       },
 
       comment_upd(index) {
@@ -149,7 +194,7 @@ export default {
          this.$axios.put(process.env.VUE_APP_ARTICLE_COMMENT_UPDEL+value+"/form" ,param,{headers}).then(() =>{
              this.page = 0;
              this.pageChk = false;
-             this.init();
+             this.comment_detail();
         }).catch((error) => {
              this.$swal('',error.response.data.result,'error');
         }).finally(() => {
@@ -187,7 +232,45 @@ export default {
         });
           }
       });
-      }
+      },
+
+      upd_click() {
+        this.$router.push({
+          path: "/articleModify",
+          name: "articleModify",
+          query: { sn: this.articleId }
+        });
+      },
+
+      delete_click(){
+            this.$swal.fire({
+                        title: '삭제 하시겠습니까?',
+                        text: '다시 되돌릴 수 없습니다.',
+                        icon: 'warning',
+                        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+                        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+                        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+                        confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+                        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+                        reverseButtons: true, // 버튼 순서 거꾸로
+   
+      }).then(result => {
+         if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+             const headers = {
+               'Authorization': 'Bearer ' + localStorage.getItem("token")
+            }
+          this.$axios.put(process.env.VUE_APP_ARTICLE_DETAIL+this.articleId+"/delete",null,{headers}).then((res) =>{
+          if(res.data.resultCode=="SUCCESS"){
+              this.$swal('','삭제되었습니다.','success');
+              this.$router.push("/article");
+          }
+        }).catch(() => {
+           history.back(-1);
+        }).finally(() => {
+        });
+          }
+      });
+}
 
   }
 
@@ -221,16 +304,15 @@ body{
 .textarea{
   resize: none
 }
-.margincustom {
-  margin-left : 2rem;
+  .margincustom {
+    margin-left : 2rem;
+  }
+  .margintpcust {
+    margin-top : 2rem;
+  }
+.deco{
+  text-decoration: line-through;
 }
-.btn-cl-cus {
-    background-color: rgba(0,0,0,0);
-    color: skyblue;
-    border: 0px ;
-    width : 15%;
-    margin-top: 1rem;
-} 
 .btn-cl-cus-upd {
     background-color: rgba(0,0,0,0);
     color: skyblue;
@@ -244,5 +326,24 @@ body{
     border: 0px ;
     /* width : 15%; */
     font-size: 13px;
+} 
+.custom-div {
+  display: flex;
+  justify-content: end;
+  margin-top:2rem;
+}
+.btn-cl-cus {
+    background-color: rgba(0,0,0,0);
+    color: skyblue;
+    border: 0px ;
+    width : 15%;
+    font-size: 13px;
+} 
+.btn-cl-cus {
+    background-color: rgba(0,0,0,0);
+    color: skyblue;
+    border: 0px ;
+    width : 15%;
+    margin-top: 1rem;
 } 
 </style>

@@ -22,8 +22,6 @@ const props = defineProps({
 });
 
 onMounted( () => { 
-  console.log(props.content);
-   console.log("onMounted")
    const xeditor = new Editor({
     el: refEditor.value,
     height: "500px",
@@ -43,7 +41,7 @@ onMounted( () => {
         const formdata = new FormData();
         formdata.append("multiFile",fileOrBlob);
         axios.post(process.env.VUE_APP_FILE_UPLOAD,formdata,{headers}).then((res) =>{
-          callback(process.env.VUE_APP_EDITOR_IMAGE+res.data[0].fileId);
+          callback(process.env.VUE_APP_EDITOR_IMAGE+res.data[0].fileId+"/"+res.data[0].fileChildId);
         }).catch(() => {
         }).finally(() => {
         });

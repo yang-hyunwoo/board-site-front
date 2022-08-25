@@ -1,17 +1,19 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
  <section class="py-5 text-center container">
-    <div class="row py-lg-5">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <p class="lead text-muted">게시판</p>
-          <div>
+            <div class="row py-5">
+      <div class="col-lg-12 mx-auto">
+        <div class="text-white p-5 shadow-sm rounded banner">
+          <h1 class="display-4">게시판</h1>
+          <!-- <p class="lead">나에게 맞는 여행을 찾아보세요</p> -->
             <select class="form-select" aria-label="Default select example" v-model="search_type">
               <option selected value="TITLE">제목</option>
               <option value="NICKNAME">닉네임</option>
             </select>
-            <input style="margin-left:1rem;" class="form-control mr-sm-2 custombar" type="search"  aria-label="Search" v-model="article_title" v-on:keyup.enter="articleSearch">
+       <input style="margin-left:1rem;" class="form-control mr-sm-2 custombar" type="search"  aria-label="Search" v-model="article_title" v-on:keyup.enter="articleSearch">
             <button class="btn btn-outline-success my-2 my-sm-0" style="margin-left:1rem;" @click="articleSearch" >Search</button>
-          </div>
+   
+        </div>
       </div>
     </div>
 
@@ -46,7 +48,7 @@
     </b-tr>
   </b-tbody>
 </b-table-simple>
-  <button @click="writer">글 쓰기</button>
+   <button style="float:right" type="button" class="btn btn-primary" @click="writer">글 쓰기</button>
 </section>
 <Pagination v-if="pageChk" :pageListItem="pageListItem"  @pageCurrent="pageCurr" :pageTotal="pageTotal"></Pagination>
 </template>
@@ -139,7 +141,17 @@ export default {
   display: inline-block;
 }
 .form-select {
-  width : 28%;
+  width : 9%;
   display: inline;
+}
+
+.banner {
+  background: #a770ef;
+  background: -webkit-linear-gradient(to right, #a770ef, #cf8bf3, #fdb99b);
+  background: linear-gradient(to right, #a770ef, #cf8bf3, #fdb99b);
+}
+.custombar{
+  width: 40%;
+  display: inline-block;
 }
 </style>
