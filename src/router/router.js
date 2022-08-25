@@ -46,6 +46,16 @@ const routes = [
       name: 'articleModify',
       component: ()=> import('@/components/article/ArticleModify.vue'),
      },
+     {
+      path: '/agencyList',
+      name: 'agencyList',
+      component: ()=> import('@/components/agency/AgencyList.vue'),
+     },
+     {
+      path: '/agencyDetail',
+      name: 'agencyDetail',
+      component: ()=> import('@/components/agency/AgencyDetail.vue'),
+     },
      
   ],
   },
