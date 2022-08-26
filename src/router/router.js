@@ -56,6 +56,11 @@ const routes = [
       name: 'agencyDetail',
       component: ()=> import('@/components/agency/AgencyDetail.vue'),
      },
+     {
+      path: '/purchaseHistory',
+      name: 'purchaseHistory',
+      component: ()=> import('@/components/purchase/PurchaseHistory.vue'),
+     },
      
   ],
   },

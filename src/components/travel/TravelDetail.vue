@@ -13,7 +13,7 @@
   <span class="margincustom" style="font-size:15px;">가격:<span class="deco" >{{$numberWithCommas(real_pay)}}</span><span style="color:red; margin-left: 1rem;">{{sale_percent}}</span> <span style="margin-left:1rem;">{{$numberWithCommas(sale_paid)}}</span></span>
 <div class="d-grid gap-2 col-6 mx-auto">
   <br>
-  <button class="btn btn-primary" type="button" @click="reserve">예약하기</button>
+  <button  class="btn btn-primary" type="button" @click="reserve" :disabled="person_max_count <= person_count">예약하기</button>
 </div>
 <BlackBg v-if="loading"></BlackBg>
 </template>
@@ -41,6 +41,8 @@ export default {
         start_at:"",
         end_at:"",
         real_pay:0,
+        person_max_count: 0,
+        person_count:0
     }
   },
   components :{
@@ -71,6 +73,8 @@ export default {
             this.sale_percent   = res.data.result.sale_percent+" %";
             this.sale_paid      = res.data.result.sale_paid+" 원";
             this.content        = res.data.result.content;
+            this.person_max_count = res.data.result.person_max_count;
+            this.person_count = res.data.result.person_count;
           }
         }).catch(() => {
            history.back(-1);
@@ -122,4 +126,5 @@ export default {
   justify-content: end;
   margin-top:2rem;
 }
+
 </style>

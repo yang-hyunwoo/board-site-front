@@ -1,7 +1,8 @@
 <template>
 
  <div class="py-4 text-center">
-      <img class="d-block mx-auto mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+      <!-- <img class="d-block mx-auto mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
+      <img v-if="img_chk" :src="img"  width="200" height="200">
       <h2>{{travel_name}}</h2>
     </div>
     <div>
@@ -58,7 +59,8 @@ export default {
         pay_chk:false,
         loading:false,
         person_count : 0,
-        person_max_count : 0
+        person_max_count : 0,
+        img_chk:false,
     }
   },
 
@@ -85,9 +87,17 @@ export default {
             this.init_sale_pay  = data.sale_paid ;
             this.travel_id      = data.travel_agency_id ;
             this.person_max_count = data.person_max_count;
+            if(data.thumnbnailFileId==null){
+              this.img_chk = false;
+            } else{
+              this.img_chk = true;
+              this.img = process.env.VUE_APP_FILE_IMAGE_THUMB_READ+data.thumnbnailFileId+"/1";
+            }
           }
-        }).catch(() => {
-             this.$swal('','잠시후 다시 이용해주세요.','error');
+        }).catch((error) => {
+          console.log(error.response.data.result);
+             this.$swal('',error.response.data.result,'error');
+             this.$router.push("/travelList");
         }).finally(() => {
         });
     },
@@ -128,8 +138,7 @@ export default {
                         buyer_name: this.user_name,
                 }, rsp => { // callback
                     if (rsp.success) {
-                          const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")
-                }
+                          const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")}
                 let param = {
                   "travelAgencyId": this.travel_id,
                   "travelAgencyListId" : this.travel_list_id,
