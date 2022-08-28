@@ -9,8 +9,9 @@ module.exports = defineConfig({
       '/api' : {
         target : 'http://192.168.0.2:8081',
         changeOrigin: true,
-        logLevel: 'debug'
-      }
+        logLevel: 'debug',
+        '^/api' : '/api'
+      },
     }
   },
 

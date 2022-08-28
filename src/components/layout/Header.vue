@@ -22,10 +22,13 @@
              <router-link class="nav-link font-color" to="/article">게시판</router-link>
         </li>
         <li class="nav-item">
-             <router-link class="nav-link font-color" to="/">구매 내역(구현 예정)</router-link>
+             <router-link class="nav-link font-color" to="/purchaseHistory">구매 내역</router-link>
         </li>
         <li class="nav-item">
              <router-link class="nav-link font-color" to="/">좋아요(구현 예정)</router-link>
+        </li>
+        <li class="nav-item">
+             <router-link class="nav-link font-color" to="/chatList">채팅방</router-link>
         </li>
       </ul>
       <ul>
