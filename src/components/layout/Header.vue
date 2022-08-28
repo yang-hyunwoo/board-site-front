@@ -27,6 +27,9 @@
         <li class="nav-item">
              <router-link class="nav-link font-color" to="/">좋아요(구현 예정)</router-link>
         </li>
+        <li class="nav-item">
+             <router-link class="nav-link font-color" to="/chatList">채팅방</router-link>
+        </li>
       </ul>
       <ul>
          <li>

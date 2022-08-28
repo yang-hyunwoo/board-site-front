@@ -61,6 +61,11 @@ const routes = [
       name: 'purchaseHistory',
       component: ()=> import('@/components/purchase/PurchaseHistory.vue'),
      },
+     {
+      path: '/chatList',
+      name: 'chatList',
+      component: ()=> import('@/components/chat/ChatList.vue'),
+     },
      
   ],
   },
