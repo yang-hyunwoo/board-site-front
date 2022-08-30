@@ -2,90 +2,30 @@
 
 
 <div class="container"> 
-<button>목록으로 이동</button>
+
 <h3 class=" text-center">{{chat_room_name}}</h3>
-
-<button>채팅방 나가기</button>
-
+<div class="jus-cent-mar">
+<button class="btn btn-danger" style="font-size:10px;" @click="roomExitClick">채팅방 나가기</button>
+</div>
 <div class="messaging">
   <div class="inbox_msg">
     <div class="inbox_people">
       <div class="headind_srch">
-        <div class="recent_heading">
-          <h4>참여 인원</h4>
+        <div class="recent_heading" style="width:100%;">
+          <span style="font-size:15px;">참여 인원: {{person_count}} 명</span>
         </div>
       </div>
       <div class="inbox_chat">
-        <div class="chat_list active_chat">
+        <div class="chat_list"  v-for="(item,index) of room_person_list" :key="index">
           <div class="chat_people">
-            <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil"> </div>
+            <!-- <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil"> </div> -->
             <div class="chat_ib">
-              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-              <p>Test, which is a new approach to have all solutions 
-                astrology under one roof.</p>
+              <h5>{{item.nickname}}</h5>
             </div>
           </div>
-        </div>
-        <div class="chat_list">
-          <div class="chat_people">
-            <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="sunil"> </div>
-            <div class="chat_ib">
-              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-              <p>Test, which is a new approach to have all solutions 
-                astrology under one roof.</p>
-            </div>
-          </div>
-        </div>
-        <div class="chat_list">
-          <div class="chat_people">
-            <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="sunil"> </div>
-            <div class="chat_ib">
-              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-              <p>Test, which is a new approach to have all solutions 
-                astrology under one roof.</p>
-            </div>
-          </div>
-        </div>
-        <div class="chat_list">
-          <div class="chat_people">
-            <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar4.png" alt="sunil"> </div>
-            <div class="chat_ib">
-              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-              <p>Test, which is a new approach to have all solutions 
-                astrology under one roof.</p>
-            </div>
-          </div>
-        </div>
-        <div class="chat_list">
-          <div class="chat_people">
-            <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="sunil"> </div>
-            <div class="chat_ib">
-              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-              <p>Test, which is a new approach to have all solutions 
-                astrology under one roof.</p>
-            </div>
-          </div>
-        </div>
-        <div class="chat_list">
-          <div class="chat_people">
-            <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="sunil"> </div>
-            <div class="chat_ib">
-              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-              <p>Test, which is a new approach to have all solutions 
-                astrology under one roof.</p>
-            </div>
-          </div>
-        </div>
-        <div class="chat_list">
-          <div class="chat_people">
-            <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="sunil"> </div>
-            <div class="chat_ib">
-              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-              <p>Test, which is a new approach to have all solutions 
-                astrology under one roof.</p>
-            </div>
-          </div>
-        </div>
+        </div> 
+
+
       </div>
     </div>
     <div class="mesgs">
@@ -118,6 +58,9 @@
   </div>
 </div>
 </div>
+<div class="jus-center">
+<button class="btn btn-primary" @click="chatListClick">목록으로 이동</button>
+</div>
 <BlackBg v-if="loading"></BlackBg>
 </template>
 
@@ -135,6 +78,8 @@ export default {
         send_message:"",
         user_id:"",
         chat_room_name:"",
+        room_person_list: [],
+        person_count:"",
     }
   },
     components :{
@@ -145,9 +90,10 @@ export default {
     },  
     methods: {
         init() {
-                this.userId();
-                this.roomTitle();
-                this.roomMessage();
+                this.userId();      //사용자 id 조회
+                this.roomTitle();   //채팅방 타이틀 조회
+                this.roomMessage(); //채팅 내역 조회
+                this.roomPersonList(); //채팅방 인원 조회
                 this.connect();
         },
         roomTitle() {
@@ -163,7 +109,7 @@ export default {
               }).finally(() => {
               });
       },
-        userId(){
+      userId(){
           const headers = {
             'Authorization': 'Bearer ' + localStorage.getItem("token")
             }
@@ -212,6 +158,31 @@ export default {
             });
         },
 
+        roomPersonList() {
+          const headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            }
+             this.$axios.get(process.env.VUE_APP_CHAT_ROOM_PERSON+this.room_id,{headers}).then((res) =>{
+                if(res.data.resultCode=="SUCCESS"){
+                    if(res.data.result.length!=0){
+                    this.person_count = res.data.result.length;
+                    this.room_person_list = [] ;
+                    res.data.result.forEach(element => {
+                        let obj = [];
+                        obj.nickname = element.nickname;
+                        obj.id = element.tripUserId;
+                        this.room_person_list.push(obj);
+                    })
+                }
+                }
+            }).catch((error) => {
+                this.$swal('',error.response.data.result,'error');
+                this.$router.push("/");
+            }).finally(() => {
+            this.loading = false;
+            });
+        },
+
         send_message_click() {
             const headers = {
             'Authorization': 'Bearer ' + localStorage.getItem("token")
@@ -241,21 +212,23 @@ export default {
                 console.log('소켓 연결 성공', frame);
                 
                 this.stompClient.subscribe("/topic/new-Message/"+this.room_id, res => {
-                  let chat = JSON.parse(res.body).result;
-                  console.log(chat.userId);
-                  console.log(this.user_id);
-                  let obj = [];
-                  if(this.user_id == chat.userId){
-                    obj.id_chk = true;
-                  } else {
-                    obj.id_chk = false;
-                  }
-                  
-                  obj.nick_name = chat.nickName;
-                  obj.content = chat.content;
-                  obj.created_time = chat.createdAt.substr(11,5);
-                  obj.created_at = chat.createdAt.substr(5,2)+"."+chat.createdAt.substr(8,2);
-                  this.messageList.push(obj);
+                      let chat = JSON.parse(res.body).result;
+                      let obj = [];
+                      if(this.user_id == chat.userId){
+                        obj.id_chk = true;
+                      } else {
+                        obj.id_chk = false;
+                      }
+                      
+                      obj.nick_name = chat.nickName;
+                      obj.content = chat.content;
+                      obj.created_time = chat.createdAt.substr(11,5);
+                      obj.created_at = chat.createdAt.substr(5,2)+"."+chat.createdAt.substr(8,2);
+                      this.messageList.push(obj);
+                });
+                this.stompClient.subscribe("/topic/room-person/"+this.room_id, res => {
+                  this.roomPersonList();
+
                 });
 
                 },
@@ -266,6 +239,44 @@ export default {
                 }
             );        
     },
+
+    chatListClick() {
+      this.$router.push("/chatList");
+    },
+
+    roomExitClick() {
+      this.$swal.fire({
+                        title: '퇴장 하시겠습니까?',
+                        text: '다시 되돌릴 수 없습니다.',
+                        icon: 'warning',
+                        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+                        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+                        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+                        confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+                        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+                        reverseButtons: true, // 버튼 순서 거꾸로
+   
+      }).then(result => {
+         if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+          const headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+         this.$axios.delete(process.env.VUE_APP_CHAT_ROOM_EXIT+ this.room_id ,{headers}).then((res) =>{
+              this.$router.push("/chatList");
+              this.stompClient.send("/app/roomList",{},headers);
+              this.stompClient.send("/app/room-person/"+this.room_id,{},headers);
+        }).catch((error) => {
+             this.$swal('',error.response.data.result,'error');
+             return false;
+        }).finally(() => {
+        });
+          }
+      });
+
+
+
+
+    }
   },
   watch: {
         messages() {
@@ -303,7 +314,7 @@ img{ max-width:100%;}
 .srch_bar {
   display: inline-block;
   text-align: right;
-  width: 60%; padding:
+  width: 60%; 
 }
 .headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
 
@@ -417,5 +428,14 @@ img{ max-width:100%;}
 .msg_history {
   height: 516px;
   overflow-y: auto;
+}
+.jus-center{
+  display: flex;
+  justify-content: center;
+}
+.jus-cent-mar{
+  display: flex;
+  justify-content: end;
+  margin-bottom: 1rem;
 }
 </style>

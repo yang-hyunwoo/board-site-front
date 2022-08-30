@@ -29,10 +29,10 @@
             <h5> <a href="#" class="text-dark">{{item.agency_name}}</a></h5>
             <p class="small text-muted mb-0">{{item.agency_comment}}</p>
             <div class="d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">
-              <p class="small mb-0"><i class="fa fa-picture-o mr-2"></i><span class="font-weight-bold">{{item.address}}</span></p>
+              <p class="small mb-0"><span class="font-weight-bold">{{item.address}}</span></p>
             </div>
             <div class="d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">
-              <p class="small mb-0"><i class="fa fa-picture-o mr-2"></i><span class="font-weight-bold">{{item.tel}}</span></p>
+              <p class="small mb-0"><span class="font-weight-bold">{{item.tel}}</span></p>
             </div>
           </div>
         </div>
