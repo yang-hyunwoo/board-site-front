@@ -67,12 +67,9 @@ export default {
             "page" : this.page
             }
             // this.loading = true;
-            console.log(process.env.VUE_APP_CHAT_LIST);
              this.$axios.get(process.env.VUE_APP_CHAT_LIST,{params:parameter}).then((res) =>{
-                console.log(res);
                 if(res.data.resultCode=="SUCCESS"){
                     this.pageTotal = res.data.result.totalElements;
-                    console.log(this.pageTotal);
                     this.roomList = [] ;
                     res.data.result.content.forEach(element => {
                         let obj = [];
@@ -110,18 +107,17 @@ export default {
             const headers = {
             'Authorization': 'Bearer ' + localStorage.getItem("token")
             }
-            console.log(process.env.VUE_APP_CHAT_ROOM_SAVE);
              this.$axios.post(process.env.VUE_APP_CHAT_ROOM_SAVE,param,{headers}).then((res) =>{
-                  this.stompClient.send("/app/roomList");
-                  // this.stompClient.subscribe("/topic/roomList", res => {
-                  // });
-                  //  this.roomListAxios();
-                  
+                this.stompClient.send("/app/roomList",{},headers);
+                this.$router.push({
+                    path: "/chatDetail",
+                    name: "chatDetail",
+                    query: { sn: res.data.result }
+                  });
             }).catch((error) => {
               console.log(error);
             }).finally(() => {
             });
-
         },
 
         connect() {
@@ -175,12 +171,25 @@ export default {
             );        
     },
     chatDetail(value) {
-      this.$router.push({
-          path: "/chatDetail",
-          name: "chatDetail",
-          query: { sn: value }
+      //있는지 확인 하기
+      const headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+         this.$axios.get(process.env.VUE_APP_CHAT_ROOM_ENTER+value,{headers}).then((res) =>{
+          this.stompClient.send("/app/roomList",{},headers);
+          if(res.data.resultCode=="SUCCESS"){
+              this.$router.push({
+                path: "/chatDetail",
+                name: "chatDetail",
+                query: { sn: value }
+            });
+
+          }
+        }).catch((error) => {
+             this.$swal('',error.response.data.result,'error');
+        }).finally(() => {
+          this.loading = false;
         });
-        // console.log(value);
     },
 
     pageCurr(value){
