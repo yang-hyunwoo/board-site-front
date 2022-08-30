@@ -89,7 +89,7 @@ export default {
       },
 
       comment_detail() {
-                const headers = {
+        const headers = {
             'Authorization': 'Bearer ' + localStorage.getItem("token")
         }
         let parameter = {

@@ -3,7 +3,7 @@
 
 <div class="container"> 
 <button>목록으로 이동</button>
-<h3 class=" text-center">채팅방 이름</h3>
+<h3 class=" text-center">{{chat_room_name}}</h3>
 
 <button>채팅방 나가기</button>
 
@@ -134,6 +134,7 @@ export default {
         loading : false,
         send_message:"",
         user_id:"",
+        chat_room_name:"",
     }
   },
     components :{
@@ -145,9 +146,23 @@ export default {
     methods: {
         init() {
                 this.userId();
+                this.roomTitle();
                 this.roomMessage();
                 this.connect();
         },
+        roomTitle() {
+              const headers = {
+                  'Authorization': 'Bearer ' + localStorage.getItem("token")
+              }
+              this.$axios.get(process.env.VUE_APP_CHAT_ROOM_TITLE+this.room_id).then((res) =>{
+                if(res.data.resultCode=="SUCCESS"){
+                  this.chat_room_name=res.data.result;
+                }
+              }).catch((error) => {
+                  this.$swal('',error.response.data.result,'error');
+              }).finally(() => {
+              });
+      },
         userId(){
           const headers = {
             'Authorization': 'Bearer ' + localStorage.getItem("token")
@@ -207,7 +222,7 @@ export default {
               TripUserId : this.user_id
               }
               this.send_message="";
-              this.stompClient.send("/app/new-Message",JSON.stringify(msg),headers);
+              this.stompClient.send("/app/new-Message/"+this.room_id,JSON.stringify(msg),headers);
         },
 
         connect() {
@@ -225,7 +240,7 @@ export default {
                 this.connected = true;
                 console.log('소켓 연결 성공', frame);
                 
-                this.stompClient.subscribe("/topic/new-Message", res => {
+                this.stompClient.subscribe("/topic/new-Message/"+this.room_id, res => {
                   let chat = JSON.parse(res.body).result;
                   console.log(chat.userId);
                   console.log(this.user_id);
