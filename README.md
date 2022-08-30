@@ -48,7 +48,7 @@ this.$swal( 'success','You clicked the <b style="color:red;">error</b> button!',
 this.$swal(타이틀 ,내용 , "상태값");
 상태값 :  success / error , waring , info ,question
 
-#2022 08 30
+# 2022 08 30
 현재 진행 사항
 메인 화면 작업중
 로그인 (완료 [인증 확인])
