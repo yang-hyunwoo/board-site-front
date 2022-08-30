@@ -14,28 +14,11 @@
             {{item.room_name}}<br>
         </label>
         <label class="pull-right">
-            <button class="btn btn-danger" style="font-size:10px">입장하기</button>
+            <button class="btn btn-danger" style="font-size:10px" @click="chatDetail(item.id)">입장하기</button>
         </label>
+        <label class="pull-right" style="margin-right:3rem;">{{item.roomPersonIngCount}} / {{item.roomCount}} 명</label>
         <div class="break"></div>
       </li>
-      <!-- <li href="#" class="list-group-item text-left">
-        <label class="name">
-          James Rodriguez (10)
-        </label>
-        <label class="pull-right">
-            <button class="btn btn-danger" style="font-size:10px">입장하기</button>
-        </label>
-        <div class="break"></div>
-      </li>
-      <li href="#" class="list-group-item text-left">
-          <label class="name">
-            Mariana pajon
-          </label>
-        <label class="pull-right">
-           <button class="btn btn-danger" style="font-size:10px">입장하기</button>
-        </label>
-        <div class="break"></div>
-      </li> -->
     </ul>
   </div>
      <button class="btn btn-danger" style="font-size:10px" @click="newRoom">채팅방 생성</button>
@@ -95,6 +78,8 @@ export default {
                         let obj = [];
                         obj.room_name = element.roomName;
                         obj.id        = element.id;
+                        obj.roomCount = element.roomCount;
+                        obj.roomPersonIngCount = element.roomPersonIngCount;
                         this.roomList.push(obj);
                     })
                 }
@@ -122,9 +107,11 @@ export default {
             let parameter = {
             "page" : this.page
             }
+            const headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            }
             console.log(process.env.VUE_APP_CHAT_ROOM_SAVE);
-             this.$axios.post(process.env.VUE_APP_CHAT_ROOM_SAVE,param).then((res) =>{
-                // this.roomSocket();
+             this.$axios.post(process.env.VUE_APP_CHAT_ROOM_SAVE,param,{headers}).then((res) =>{
                   this.stompClient.send("/app/roomList");
                   // this.stompClient.subscribe("/topic/roomList", res => {
                   // });
@@ -132,19 +119,21 @@ export default {
                   
             }).catch((error) => {
               console.log(error);
-                // this.$swal('',error.response.data.result,'error');
             }).finally(() => {
             });
 
         },
 
         connect() {
+          const headers = {
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            }
             const serverURL = "http://localhost:8081/ws/chat"
             let socket = new SockJS(serverURL);
             this.stompClient = Stomp.over(socket);
             console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
             this.stompClient.connect(
-                {},
+              headers,
                 frame => {
                 // 소켓 연결 성공
                 this.connected = true;
@@ -184,6 +173,14 @@ export default {
                 this.connected = false;
                 }
             );        
+    },
+    chatDetail(value) {
+      this.$router.push({
+          path: "/chatDetail",
+          name: "chatDetail",
+          query: { sn: value }
+        });
+        // console.log(value);
     },
 
     pageCurr(value){
