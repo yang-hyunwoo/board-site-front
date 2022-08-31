@@ -118,10 +118,10 @@ export default {
                 this.phone_number = res.data.result.phoneNumber;
                 this.gender = res.data.result.gender;
                 if(res.data.result.profileId==null || res.data.result.profileId==""){
-                this.img_real = false;
-              } else{
-                this.img_real = true;
-              }
+                    this.img_real = false;
+                } else {
+                    this.img_real = true;
+                }
                 this.img_id = res.data.result.profileId;
                 this.img = process.env.VUE_APP_FILE_IMAGE_READ+res.data.result.profileId+"/"+1;
 
