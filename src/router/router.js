@@ -71,6 +71,11 @@ const routes = [
       name: 'chatDetail',
       component: ()=> import('@/components/chat/ChatDetail.vue'),
      },
+     {
+      path: '/myPage',
+      name: 'myPage',
+      component: ()=> import('@/components/myPage/MyPage.vue'),
+     },
      
   ],
   },

@@ -30,15 +30,17 @@
         <li class="nav-item">
              <router-link class="nav-link font-color" to="/chatList">채팅방</router-link>
         </li>
-      </ul>
-      <ul>
-         <li>
+        <li class="nav-item">
+             <router-link class="nav-link font-color" to="/myPage">마이 페이지</router-link>
+        </li>
+        <li>
             <img class="algin-login" v-bind:src= "login" style="width: 32px;" @click="loginClick">
         </li>
         <li>
             <img class="algin-logOut" v-bind:src= "logOut" style="width: 32px;" @click="logOutClick">
         </li>
       </ul>
+        
       <!-- <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>

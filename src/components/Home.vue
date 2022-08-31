@@ -1,77 +1,31 @@
 <template>
   <div class="hello">
     <!-- <h1>{{ msg }}</h1> -->
-
-
-<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" >
+    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators" v-if="chk">
-      <!--슬라이드 갯수-->
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" :class="{active:index==0}" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#myCarouse1" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#myCarouse1" data-bs-slide-to="2" aria-label="Slide 3"></button>
-      <button type="button" data-bs-target="#myCarouse1" data-bs-slide-to="3" aria-label="Slide 4"></button>
-      <button type="button" data-bs-target="#myCarouse1" data-bs-slide-to="4" aria-label="Slide 5"></button>
+      <button  v-for="(item,index) of travel_agency_list_length" :key="index" :class="{active:index==0}" type="button" data-bs-target="#myCarousel" :data-bs-slide-to=index aria-label="Slide 3"></button>
     </div>
-    <div class="carousel-inner" >
-      <div :class='index == 0 ? "carousel-item active" : "carousel-item"' style="height: 29rem;">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-        <!-- <img v-bind:src= "login" style="width: 100%; height: 100%;"  @click="loginClick"> -->
-      <div class="container">
-          <div class="carousel-caption text-start">
-            <h1>여행사 여행 제목</h1>
-            <p>여행사 여행 간략 설명 정도</p>
-            <p><a class="btn btn-lg btn-primary" href="#">$250,000</a></p>
+    <div class="carousel-inner">
+      <div :class='index == 0 ? "carousel-item active" : "carousel-item"' style="height: 29rem;"  v-for="(item,index) of travel_agency_list" :key="index" >
+          <svg v-if="!item.img_real" class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
+          <img v-if="item.img_real" v-bind:src= "item.img" style="width: 100%; height: 100%;" >
+         <div class="container">
+          <div  class="carousel-caption text-start" > <!--text-start , null text-end -->
+            <h1>{{item.title}}</h1>
+            <p>여행사: {{item.travel_agency_name}}</p>
+            <p><button class="btn btn-lg btn-primary" href="#" @click="pageTravelDetail(item.id)">{{$numberWithCommas(item.paid)}}원</button></p>
           </div>
         </div>
       </div>
-      <div class="carousel-item" style="height: 29rem;">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-        <div class="container">
-          <div class="carousel-caption">
-           <h1>여행사 여행 제목2</h1>
-            <p>여행사 여행 간략 설명 정도2</p>
-            <p><a class="btn btn-lg btn-primary" href="#">$300,000</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item" style="height: 29rem;">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-        <div class="container">
-          <div class="carousel-caption text-end">
-             <h1>여행사 여행 제목3</h1>
-             <p>여행사 여행 간략 설명 정도3</p>
-             <p><a class="btn btn-lg btn-primary" href="#">$400,000</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item" style="height: 29rem;">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-        <div class="container">
-          <div class="carousel-caption text-start">
-             <h1>여행사 여행 제목4</h1>
-             <p>여행사 여행 간략 설명 정도4</p>
-             <p><a class="btn btn-lg btn-primary" href="#">$450,000</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item" style="height: 29rem;">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-        <div class="container">
-          <div class="carousel-caption text-start">  <!-- text-start / text-end /null 앞 뒤 중간 -->
-             <h1>여행사 여행 제목5</h1>
-             <p>여행사 여행 간략 설명 정도5</p>
-             <p><a class="btn btn-lg btn-primary" href="#">$500,000</a></p>
-          </div>
-        </div>
-      </div>
+     
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden"></span>
+      <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden"></span>
+      <span class="visually-hidden">Next</span>
     </button>
   </div>
 
@@ -93,7 +47,7 @@
     </div><!-- /.row -->
 
 
-    <p> 오늘의 추천 여행지</p>
+    <p> 오늘의 추천 여행지(뭐 넣을지 고민 중....)</p>
 
     <hr class="featurette-divider">
 
@@ -135,10 +89,6 @@
 
     <hr class="featurette-divider">
 
-
-
-
-  
 </div>
   </div>
 </template>
@@ -154,6 +104,8 @@ export default {
       index : 0,
       chk :false,
       agency_random_list : [],
+      travel_agency_list_length : 0,
+      travel_agency_list: [],
     }
   },
 
@@ -167,13 +119,41 @@ export default {
 
     init() {
       this.travelAgencyRandom();
+      this.travelAgencyListSort();
+    },
+
+    travelAgencyListSort() {
+      this.chk = false;
+      this.$axios.get(process.env.VUE_APP_TRIP_AGENCY_LIST_SORT).then((res) =>{
+          if(res.data.resultCode=="SUCCESS"){
+            this.travel_agency_list_length = res.data.result.length;
+            this.travel_agency_list=[];
+            res.data.result.forEach(element => {
+                let obj = [];
+                obj.title               = element.title;
+                obj.travel_agency_name  = element.travelAgencyName;
+                obj.paid                = element.sale_paid;
+                obj.id                  = element.id;
+              if(element.thumnbnailFileId==null || element.thumnbnailFileId==""){
+                obj.img_real = false;
+              } else{
+                obj.img_real = true;
+              }
+              obj.img    = process.env.VUE_APP_FILE_IMAGE_READ+element.thumnbnailFileId+"/"+1;
+              this.travel_agency_list.push(obj);
+            });
+          }
+        }).catch(() => {
+             this.$swal('','잠시후 다시 이용해주세요.','error');
+        }).finally(() => {
+          this.chk = true;
+        });
     },
 
     travelAgencyRandom() {
         this.$axios.get(process.env.VUE_APP_TRIP_AGENCY_RANDOM).then((res) =>{
           if(res.data.resultCode=="SUCCESS"){
             this.agency_random_list=[];
-            console.log(res);
             res.data.result.forEach(element => {
               
               let obj = [];
@@ -195,12 +175,19 @@ export default {
         });
     },
     agencyDetailClick(value) {
-           this.$router.push({
+        this.$router.push({
             path: "/agencyDetail",
             name: "agencyDetail",
             query: { sn: value }
         });
-    }
+    },
+    pageTravelDetail(value){
+      this.$router.push({
+            path: "/travelDetail",
+            name: "travelDetail",
+            query: { sn: value }
+      });
+    },  
   }
 
 }
