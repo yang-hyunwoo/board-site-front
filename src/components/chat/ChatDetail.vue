@@ -18,6 +18,7 @@
       <div class="inbox_chat">
         <div class="chat_list"  v-for="(item,index) of room_person_list" :key="index">
           <div class="chat_people">
+            <div class="chat_img" v-if="item.img_real"> <img v-bind:src= "item.img" alt="sunil"> </div>
             <!-- <div class="chat_img"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil"> </div> -->
             <div class="chat_ib">
               <h5>{{item.nickname}}</h5>
@@ -32,7 +33,7 @@
       <div class="msg_history" ref='messages'>
         <div  v-for="(item,index) of messageList" :key="index">
         <div class="incoming_msg" v-if="!item.id_chk">
-          <!-- <div class="incoming_msg_img"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="sunil"> </div> -->
+          <div class="incoming_msg_img" v-if="item.img_real"><img v-bind:src= "item.img" alt="sunil"></div>
           <div class="received_msg">
             <span>{{item.nick_name}}</span>
             <div class="received_withd_msg">
@@ -116,7 +117,6 @@ export default {
             this.$axios.get(process.env.VUE_APP_CHAT_ROOM_MESSAGE_ID,{headers}).then((res) =>{
                 if(res.data.resultCode=="SUCCESS"){
                     if(res.data.result!="" || res.data.result!=undefined || res.data.result!="undefined"){
-                      console.log(res.data.result);
                          this.user_id = res.data.result;
 
                     }
@@ -141,6 +141,12 @@ export default {
                     this.messageList = [] ;
                     res.data.result.forEach(element => {
                         let obj = [];
+                        if(element.profileId==null || element.profileId==""){
+                          obj.img_real = false;
+                        } else {
+                          obj.img_real = true;
+                        }
+                          obj.img = process.env.VUE_APP_FILE_IMAGE_READ+element.profileId+"/"+1;
                         obj.id_chk = element.idChk;
                         obj.nick_name = element.nickName;
                         obj.content = element.content;
@@ -171,6 +177,13 @@ export default {
                         let obj = [];
                         obj.nickname = element.nickname;
                         obj.id = element.tripUserId;
+                        if(element.profileId==null || element.profileId==""){
+                          obj.img_real = false;
+                        } else {
+                          obj.img_real = true;
+                        }
+                          obj.img = process.env.VUE_APP_FILE_IMAGE_READ+element.profileId+"/"+1;
+
                         this.room_person_list.push(obj);
                     })
                 }
@@ -218,6 +231,12 @@ export default {
                         obj.id_chk = true;
                       } else {
                         obj.id_chk = false;
+                        if(chat.profileId==null || chat.profileId==""){
+                          obj.img_real = false;
+                        } else {
+                          obj.img_real = true;
+                          obj.img = process.env.VUE_APP_FILE_IMAGE_READ+chat.profileId+"/"+1;
+                        }
                       }
                       
                       obj.nick_name = chat.nickName;
