@@ -128,7 +128,11 @@ export default {
       });
     },
     writer(){
+      if(!this.$tokenCheck()){
+        this.$router.push("/login");
+      } else {  
         this.$router.push("/articleWrite");
+      }
     }
   }
 

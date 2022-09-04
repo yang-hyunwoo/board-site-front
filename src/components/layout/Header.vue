@@ -12,6 +12,9 @@
         <li class="nav-item">
            <!-- <router-link class="nav-link font-color" to="/">홈</router-link> -->
         </li>
+        <li class="nav-item">
+             <router-link class="nav-link font-color" to="/tourList">관광지</router-link>
+        </li>
           <li class="nav-item">
              <router-link class="nav-link font-color" to="/agencyList">여행사</router-link>
         </li>
@@ -19,22 +22,25 @@
           <router-link class="nav-link font-color" to="/travelList">여행 리스트</router-link>
         </li>
         <li class="nav-item">
-             <router-link class="nav-link font-color" to="/article">게시판</router-link>
+             <router-link class="nav-link font-color" to="/article">자유 게시판</router-link>
         </li>
         <li class="nav-item">
              <router-link class="nav-link font-color" to="/purchaseHistory">구매 내역</router-link>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
              <router-link class="nav-link font-color" to="/">좋아요(구현 예정)</router-link>
-        </li>
+        </li> -->
         <li class="nav-item">
              <router-link class="nav-link font-color" to="/chatList">채팅방</router-link>
         </li>
         <li class="nav-item">
              <router-link class="nav-link font-color" to="/myPage">마이 페이지</router-link>
         </li>
+        <li class="nav-item">
+             <router-link class="nav-link font-color" to="/myChatList">내 채팅</router-link>
+        </li>
         <li>
-            <img class="algin-login" v-bind:src= "login" style="width: 32px;" @click="loginClick">
+            <img class="algin-login" v-bind:src= "login" style="width: 32px;" @click="loginClick" v-if="authChk">
         </li>
         <li>
             <img class="algin-logOut" v-bind:src= "logOut" style="width: 32px;" @click="logOutClick">
@@ -88,7 +94,15 @@ export default {
 	data: function () {
     return {
       login  : login ,
-      logOut : logOut
+      logOut : logOut,
+      authChk: true,
+    }
+  },
+  created() {
+    if(!this.$tokenCheck()){
+        this.authChk = true;
+      } else {      
+        this.authChk = false;
     }
   },
   methods: {
@@ -97,7 +111,9 @@ export default {
       },
 
       logOutClick() {
-        alert("로그아웃");
+        localStorage.clear();
+        this.authChk = true;
+        this.$router.push('/');
       }
 
   }
