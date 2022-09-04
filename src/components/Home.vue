@@ -46,22 +46,34 @@
       </div>
     </div><!-- /.row -->
 
-
-    <p> 오늘의 추천 여행지(뭐 넣을지 고민 중....)</p>
-
+    <br>
+    <h4>이런 관광지는 어떤가요?</h4>
+    <div v-for="(item,index) of tour_list" :key="index">
     <hr class="featurette-divider">
 
     <div class="row featurette">
-      <div class="col-md-7">
-        <h2 class="featurette-heading fw-normal lh-1">부산 </h2>
-        <p class="lead">부산의 어쩌고 </p>
-      </div>
-      <div class="col-md-5">
-        <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-      </div>
-    </div>
+      <div class="col-md-7 " v-if="index%2==0">
 
-    <hr class="featurette-divider">
+        <h2 class="featurette-heading fw-normal lh-1" @click="tourList(item.id)" style="cursor: pointer;">{{item.city}}</h2>
+        <p class="lead">{{item.content}}</p>
+      </div>
+      <div class="col-md-5 order-md-2" >
+        <div v-if="!item.img_real">
+          <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
+      </div>
+      <div v-if="item.img_real">
+        <img :src="item.img" width="500" height="500">
+      </div>
+      </div>
+      <div class="col-md-7 order-md-2" v-if="index%2!=0">
+
+      <h2 class="featurette-heading fw-normal lh-1" @click="tourList(item.id)" style="cursor: pointer;">{{item.city}}</h2>
+        <p class="lead">{{item.content}}</p>
+        </div>
+    </div>
+  </div>
+
+    <!-- <hr class="featurette-divider">
 
     <div class="row featurette">
       <div class="col-md-7 order-md-2">
@@ -87,7 +99,7 @@
       </div>
     </div>
 
-    <hr class="featurette-divider">
+    <hr class="featurette-divider"> -->
 
 </div>
   </div>
@@ -106,6 +118,7 @@ export default {
       agency_random_list : [],
       travel_agency_list_length : 0,
       travel_agency_list: [],
+      tour_list:[],
     }
   },
 
@@ -120,6 +133,7 @@ export default {
     init() {
       this.travelAgencyRandom();
       this.travelAgencyListSort();
+      this.tourRandom();
     },
 
     travelAgencyListSort() {
@@ -174,6 +188,30 @@ export default {
         }).finally(() => {
         });
     },
+    tourRandom() {
+      this.$axios.get(process.env.VUE_APP_TOUR_RANDOM).then((res) =>{
+          if(res.data.resultCode=="SUCCESS"){
+            console.log(res);
+            this.tour_list=[];
+            res.data.result.forEach(element => {
+              let obj = [];
+              obj.city      = element.city;
+              obj.id = element.id;
+              obj.content    = element.content;
+              if(element.thumbnailId==null || element.thumbnailId==""){
+                obj.img_real = false;
+              } else{
+                obj.img_real = true;
+              }
+              obj.img    = process.env.VUE_APP_FILE_IMAGE_READ+element.thumbnailId+"/"+1;
+              this.tour_list.push(obj);
+            });
+          }
+        }).catch(() => {
+             this.$swal('','잠시후 다시 이용해주세요.','error');
+        }).finally(() => {
+        });
+    },
     agencyDetailClick(value) {
         this.$router.push({
             path: "/agencyDetail",
@@ -188,6 +226,13 @@ export default {
             query: { sn: value }
       });
     },  
+    tourList(value){
+      this.$router.push({
+            path: "/tourDetail",
+            name: "tourDetail",
+            query: { sn: value }
+      });
+    },
   }
 
 }

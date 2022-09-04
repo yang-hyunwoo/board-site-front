@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 
 const requireAuth = () =>(to,from,next) => {
-  if(localStorage.getItem("token")==null) {
+  if(sessionStorage.getItem("token")==null) {
     next("/login");
   }
   return next();
@@ -85,6 +85,16 @@ const routes = [
       name: 'myPage',
       component: ()=> import('@/components/myPage/MyPage.vue'),
       beforeEnter:requireAuth(),
+     },
+     {
+      path: '/tourList',
+      name: 'tourList',
+      component: ()=> import('@/components/tour/TourList.vue'),
+     },
+     {
+      path: '/tourDetail',
+      name: 'tourDetail',
+      component: ()=> import('@/components/tour/TourDetail.vue'),
      },
      
   ],

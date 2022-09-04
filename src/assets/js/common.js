@@ -62,7 +62,7 @@ export default{
          헤더에 실어서 보내주고 없으면 헤더에 실어서 보내주지 않게 체크 하는 함수
         */
         Vue.config.globalProperties.$tokenCheck = function() {
-            let token = localStorage.getItem("token");
+            let token = sessionStorage.getItem("token");
             if(token == null || token.length==0 || token == "null" || token == "undefined" || token ==undefined) {
                 return false;
             } 

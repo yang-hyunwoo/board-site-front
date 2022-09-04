@@ -81,7 +81,7 @@ export default {
             this.purchaseList();
         },
         purchaseList() {
-            const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")}
+            const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem("token")}
             let parameter = {
                 "page" : this.page
             }
@@ -158,7 +158,7 @@ export default {
                 "travelAgencyListId" : list_id
             }
             const headers = {
-                'Authorization': 'Bearer ' + localStorage.getItem("token")
+                'Authorization': 'Bearer ' + sessionStorage.getItem("token")
             }
          this.loading = true;
          this.$axios.post(process.env.VUE_APP_TRAVEL_REFUND ,param,{headers}).then((res) =>{

@@ -120,7 +120,7 @@ export default {
               "page" : this.page
               }
               const headers = {
-              'Authorization': 'Bearer ' + localStorage.getItem("token")
+              'Authorization': 'Bearer ' + sessionStorage.getItem("token")
               }
               this.$axios.post(process.env.VUE_APP_CHAT_ROOM_SAVE,param,{headers}).then((res) =>{
                   this.stompClient.send("/app/roomList",{},headers);
@@ -138,7 +138,7 @@ export default {
 
         connect() {
           const headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
             }
             const serverURL = "http://localhost:8081/ws/chat"
             let socket = new SockJS(serverURL);
@@ -174,7 +174,7 @@ export default {
     },
     chatDetail(value) {
       const headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
         }
          this.$axios.get(process.env.VUE_APP_CHAT_ROOM_ENTER+value,{headers}).then((res) =>{
           //방문 여부 방문시 roomList 와 room-person을 send 해준다.  

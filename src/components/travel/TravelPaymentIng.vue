@@ -138,7 +138,7 @@ export default {
                         buyer_name: this.user_name,
                 }, rsp => { // callback
                     if (rsp.success) {
-                          const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")}
+                          const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem("token")}
                 let param = {
                   "travelAgencyId": this.travel_id,
                   "travelAgencyListId" : this.travel_list_id,

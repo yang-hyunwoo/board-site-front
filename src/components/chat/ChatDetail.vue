@@ -99,7 +99,7 @@ export default {
         },
         roomTitle() {
               const headers = {
-                  'Authorization': 'Bearer ' + localStorage.getItem("token")
+                  'Authorization': 'Bearer ' + sessionStorage.getItem("token")
               }
               this.$axios.get(process.env.VUE_APP_CHAT_ROOM_TITLE+this.room_id).then((res) =>{
                 if(res.data.resultCode=="SUCCESS"){
@@ -112,7 +112,7 @@ export default {
       },
       userId(){
           const headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
             }
             this.$axios.get(process.env.VUE_APP_CHAT_ROOM_MESSAGE_ID,{headers}).then((res) =>{
                 if(res.data.resultCode=="SUCCESS"){
@@ -132,7 +132,7 @@ export default {
 
         roomMessage() {
             const headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
             }
             this.loading = true;
              this.$axios.get(process.env.VUE_APP_CHAT_ROOM_MESSAGE+this.room_id,{headers}).then((res) =>{
@@ -166,7 +166,7 @@ export default {
 
         roomPersonList() {
           const headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
             }
              this.$axios.get(process.env.VUE_APP_CHAT_ROOM_PERSON+this.room_id,{headers}).then((res) =>{
                 if(res.data.resultCode=="SUCCESS"){
@@ -198,7 +198,7 @@ export default {
 
         send_message_click() {
             const headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
             }
               const msg = {
               chatRoomId :  this.room_id ,
@@ -211,7 +211,7 @@ export default {
 
         connect() {
             const headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
             }
             const serverURL = "http://localhost:8081/ws/chat"
             let socket = new SockJS(serverURL);
@@ -278,7 +278,7 @@ export default {
       }).then(result => {
          if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
           const headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
         }
          this.$axios.delete(process.env.VUE_APP_CHAT_ROOM_EXIT+ this.room_id ,{headers}).then((res) =>{
               this.$router.push("/chatList");

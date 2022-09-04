@@ -107,7 +107,7 @@ export default {
 
     myPage() {
         const headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
           }
         this.loading = true;
         this.$axios.get(process.env.VUE_APP_TRIP_USER_MY_PAGE,{headers}).then((res) =>{
@@ -141,7 +141,7 @@ export default {
             "password" : this.user_password
         }
         const headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
         }
         this.$axios.post(process.env.VUE_APP_TRIP_USER_PASSWORD,param,{headers}).then((res) =>{
                 if(res.data.resultCode=="SUCCESS"){
@@ -177,7 +177,7 @@ export default {
             return false;
         }
         const headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem("token")
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
         }
         let param = {
             "nickName" : this.user_nickname,

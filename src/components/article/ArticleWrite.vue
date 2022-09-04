@@ -31,7 +31,7 @@ export default {
             this.contentChange =  value;
         },
         regArticle(){
-             const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")}
+             const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem("token")}
             var content = this.contentChange;
             content = content.replace(/&nbsp;/gi,"");
             content = content.replace(/<br>/gi,"");

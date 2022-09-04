@@ -99,10 +99,10 @@ export default {
     }
   },
   created() {
-    if(!this.$tokenCheck()){
-        this.authChk = true;
-      } else {      
+    if(sessionStorage.getItem("token")!=null){
         this.authChk = false;
+      } else {      
+        this.authChk = true;
     }
   },
   methods: {

@@ -41,7 +41,7 @@ export default {
 
     validArticle() {
         this.loading = true;
-        const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")}
+        const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem("token")}
         this.$axios.get(process.env.VUE_APP_ARTICLE_UPDATE_VALID+this.$route.query.sn,{headers}).then((res) =>{
          if(res.data.resultCode=="SUCCESS"){
             this.title = res.data.result.title;
@@ -61,7 +61,7 @@ export default {
             this.contentChange =  value;
         },
         regArticle(){
-             const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token")}
+             const headers = { 'Authorization': 'Bearer ' + sessionStorage.getItem("token")}
             var content = this.contentChange;
             content = content.replace(/&nbsp;/gi,"");
             content = content.replace(/<br>/gi,"");

@@ -1,12 +1,9 @@
 <template>
-<div class="custom-div" v-if="auth_article">
-  <button class="btn-cl-cus-upd" @click="upd_click">수정</button><button  class="btn-cl-cus-del" @click="delete_click">삭제</button>
-</div>
 <div class="margincustom margintpcust">
     <h2>{{title}}</h2>
 </div>
 <div class="margincustom">
-  {{nickname}} 
+  도시명 :{{city}} 
 </div>
 <div class="margincustom">
   <span style="font-size:13px;">등록일 : {{created_at}}</span> <span style="font-size:13px; color: gray;">조회수:{{read_count}}</span>
@@ -31,7 +28,7 @@
 
                 <div class="bg-light p-2">
                     <!-- <div class="d-flex flex-row align-items-start"><img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40"><textarea class="form-control ml-1 shadow-none textarea"></textarea></div> -->
-                    <div class="d-flex flex-row align-items-start"><textarea class="form-control ml-1 shadow-none textarea" v-model="comment_reply_ins"></textarea><button class="btn-cl-cus" @click="comment_ins(articleId)">등록</button></div>
+                    <div class="d-flex flex-row align-items-start"><textarea class="form-control ml-1 shadow-none textarea" v-model="comment_reply_ins"></textarea><button class="btn-cl-cus" @click="comment_ins(tourId)">등록</button></div>
                 </div>
             </div>
         </div>
@@ -49,9 +46,9 @@ import Pagination from '../layout/Pagination';
 export default {
 	data: function () {
     return {
-        articleId:0,
+        tourId:0,
         contentType:'',
-        articleDetail : this.$route.query.sn,
+        tourDetail : this.$route.query.sn,
         contentChange:[],
         reply: [],
         loading:false,
@@ -70,6 +67,7 @@ export default {
         created_at:"",
         auth_article:"",
         detail_viewer: false,
+        city:"",
     }
   },
   components :{
@@ -78,14 +76,14 @@ export default {
         Pagination,
   },
   created(){
-    this.articleId=Number(this.articleDetail);
-    this.contentType ="article"
+    this.tourId=Number(this.tourDetail);
+    this.contentType ="tour"
     this.init();
   },    
   methods: {
       init() {
           this.comment_detail();
-          this.articleDetailAxios();
+          this.tourDetailAxios();
       },
 
       comment_detail() {
@@ -98,7 +96,7 @@ export default {
 
         this.loading = true;
         this.reply=[];
-         this.$axios.get(process.env.VUE_APP_ARTICLE_COMMENT_LIST+this.articleId,this.$tokenCheck()==true?{headers,params:parameter}:{params:parameter}).then((res) =>{
+         this.$axios.get(process.env.VUE_APP_TOUR_COMMENT+this.tourId,this.$tokenCheck()==true?{headers,params:parameter}:{params:parameter}).then((res) =>{
           if(res.data.resultCode=="SUCCESS"){
             this.pageTotal = res.data.result.totalElements;
             res.data.result.content.forEach(element=>{
@@ -124,20 +122,18 @@ export default {
         });
       },
 
-      articleDetailAxios() {
+      tourDetailAxios() {
           const headers = {
             'Authorization': 'Bearer ' + sessionStorage.getItem("token")
           }
 
-        this.$axios.get(process.env.VUE_APP_ARTICLE_DETAIL+this.articleId,this.$tokenCheck()==true?{headers}:"").then((res) =>{
+        this.$axios.get(process.env.VUE_APP_TOUR_DETAIL+this.tourId,this.$tokenCheck()==true?{headers}:"").then((res) =>{
             if(res.data.resultCode=="SUCCESS"){
-              console.log(res.data.result.title);
-              this.content              = res.data.result.content;
+              this.content        = res.data.result.content;
               this.title          = res.data.result.title;
-              this.nickname    = res.data.result.nickName;
+              this.city           = res.data.result.city;
               this.read_count     = res.data.result.readCount;
-              this.created_at  = res.data.result.createdAt.substr(0,4)+"."+res.data.result.createdAt.substr(5,2)+"."+res.data.result.createdAt.substr(8,2);
-              this.auth_article   = res.data.result.authChk;
+              this.created_at     = res.data.result.createdAt.substr(0,4)+"."+res.data.result.createdAt.substr(5,2)+"."+res.data.result.createdAt.substr(8,2);
             }
           }).catch(() => {
             history.back(-1);
@@ -155,11 +151,11 @@ export default {
             'Authorization': 'Bearer ' + sessionStorage.getItem("token")
         }
         let param = {
-          articleId : value,
+          tourId : value,
           content : this.comment_reply_ins
         }
          this.loading = true;
-         this.$axios.post(process.env.VUE_APP_ARTICLE_COMMENT_INSERT ,param,{headers}).then(() =>{
+         this.$axios.post(process.env.VUE_APP_TOUR_COMMENT+"new",param,{headers}).then(() =>{
           this.comment_reply_ins = "";
           this.pageChk = false;
           this.init();
@@ -187,11 +183,11 @@ export default {
             'Authorization': 'Bearer ' + sessionStorage.getItem("token")
         }
         let param = {
-          "articleId" : this.articleId,
+          "tourId" : this.tourId,
           "content"   : this.form.new_content[index]
         }
          this.loading = true;
-         this.$axios.put(process.env.VUE_APP_ARTICLE_COMMENT_UPDEL+value+"/form" ,param,{headers}).then(() =>{
+         this.$axios.put(process.env.VUE_APP_TOUR_COMMENT+value+"/form" ,param,{headers}).then(() =>{
              this.page = 0;
              this.pageChk = false;
              this.comment_detail();
@@ -221,7 +217,7 @@ export default {
         }
 
          this.loading = true;
-         this.$axios.put(process.env.VUE_APP_ARTICLE_COMMENT_UPDEL+value+"/delete" ,null,{headers}).then(() =>{
+         this.$axios.put(process.env.VUE_APP_TOUR_COMMENT+value+"/delete" ,null,{headers}).then(() =>{
              this.page = 0;
              this.pageChk = false;
              this.init();
@@ -233,45 +229,6 @@ export default {
           }
       });
       },
-
-      upd_click() {
-        this.$router.push({
-          path: "/articleModify",
-          name: "articleModify",
-          query: { sn: this.articleId }
-        });
-      },
-
-      delete_click(){
-            this.$swal.fire({
-                        title: '삭제 하시겠습니까?',
-                        text: '다시 되돌릴 수 없습니다.',
-                        icon: 'warning',
-                        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-                        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
-                        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
-                        confirmButtonText: '확인', // confirm 버튼 텍스트 지정
-                        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
-                        reverseButtons: true, // 버튼 순서 거꾸로
-   
-      }).then(result => {
-         if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
-             const headers = {
-               'Authorization': 'Bearer ' + sessionStorage.getItem("token")
-            }
-          this.$axios.put(process.env.VUE_APP_ARTICLE_DETAIL+this.articleId+"/delete",null,{headers}).then((res) =>{
-          if(res.data.resultCode=="SUCCESS"){
-              this.$swal('','삭제되었습니다.','success');
-              this.$router.push("/article");
-          }
-        }).catch(() => {
-           history.back(-1);
-        }).finally(() => {
-        });
-          }
-      });
-}
-
   }
 
 }
