@@ -20,16 +20,22 @@
                             <tbody>
                                 <tr v-for="(item,index) of purchase_list" :key="index">
                                     <td>
-                                        <img v-if="item.img_chk" :src="item.img">
+                                        <img v-if="item.img_chk" :src="item.img" >
                                         <span class="user-link">{{item.travel_nm}}</span>
                                     </td>
                                     <td>{{item.created_at}}</td>
-                                    <td>{{$numberWithCommas(item.paid)}}원</td>
+                                    <td>{{$numberWithCommas(item.paid)}}원  <button class="btn btn-danger" v-if="item.state=='결제 완료'" style="font-size:10px" @Click="refundClick(item.imp_uid,item.paid,item.person_count,item.id,item.list_id)">결제 취소</button></td>
                                     <td class="text-center">
                                         <span class="label label-default">{{item.state}}</span>
                                     </td>
                                     <td v-if="item.state=='결제 완료'">
-                                        <button class="btn btn-danger" style="font-size:10px" @Click="refundClick(item.imp_uid,item.paid,item.person_count,item.id,item.list_id)">결제 취소</button>
+                                        <img :src="item.qrcode_img">
+                                        팝업으로 수정하기
+                                        <button class="btn btn-primary" style="font-size:10px" @click="qrImg(item.qrcode_id)">qr 확인</button>
+                                        
+                                    </td>
+                                    <td v-if="item.state=='결제 취소'">
+                                      <span style="color:blue;">환불 완료</span>
                                     </td>
                                 </tr>
                                 <tr colspan="5" v-if="purchase_list.length==0">
@@ -101,6 +107,8 @@ export default {
                             obj.person_count    = element.personCount;
                             obj.id              = element.id;
                             obj.list_id         = element.travelAgencyListId;
+                            obj.qrcode_id       = element.qrCodeId;
+                            obj.qrcode_img      = process.env.VUE_APP_FILE_IMAGE_READ+element.qrCodeId+"/"+1;
                             if(element.deleted){
                                 obj.state = "결제 취소";
                             } else {
@@ -120,13 +128,15 @@ export default {
             this.loading = false;
             });
         },
+
         pageCurr(value){
             this.page = value-1;
             this.purchaseList();
         },
+        qrImg(value){
+            console.log(value);
+        },  
         refundClick(uid,paid,person_count,id,list_id) {
-                 
-        
         this.$swal.fire({
                         title: '환불 하시겠습니까?',
                         text: '다시 되돌릴 수 없습니다.',

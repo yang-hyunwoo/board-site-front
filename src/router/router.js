@@ -1,5 +1,12 @@
 import { createWebHistory, createRouter } from "vue-router";
 
+const requireAuth = () =>(to,from,next) => {
+  if(localStorage.getItem("token")==null) {
+    next("/login");
+  }
+  return next();
+}
+
 const routes = [
   {
     path: '/',
@@ -60,11 +67,13 @@ const routes = [
       path: '/purchaseHistory',
       name: 'purchaseHistory',
       component: ()=> import('@/components/purchase/PurchaseHistory.vue'),
+      beforeEnter:requireAuth(),
      },
      {
       path: '/chatList',
       name: 'chatList',
       component: ()=> import('@/components/chat/ChatList.vue'),
+      beforeEnter:requireAuth(),
      },
      {
       path: '/chatDetail',
@@ -75,6 +84,7 @@ const routes = [
       path: '/myPage',
       name: 'myPage',
       component: ()=> import('@/components/myPage/MyPage.vue'),
+      beforeEnter:requireAuth(),
      },
      
   ],
