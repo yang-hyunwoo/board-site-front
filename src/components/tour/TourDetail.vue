@@ -143,27 +143,31 @@ export default {
       },
 
       comment_ins(value) {
-        if(this.comment_reply_ins==""){
-             this.$swal('','댓글을 입력해주세요.','warning');
-             return;
-        }
-        const headers = {
-            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
-        }
-        let param = {
-          tourId : value,
-          content : this.comment_reply_ins
-        }
-         this.loading = true;
-         this.$axios.post(process.env.VUE_APP_TOUR_COMMENT+"new",param,{headers}).then(() =>{
-          this.comment_reply_ins = "";
-          this.pageChk = false;
-          this.init();
-        }).catch((error) => {
-             this.$swal('',error.response.data.result,'error');
-        }).finally(() => {
-          this.loading = false;
-        });
+        if(!this.$tokenCheck()){
+          this.$router.push("/login");
+        } else {
+            if(this.comment_reply_ins==""){
+                this.$swal('','댓글을 입력해주세요.','warning');
+                return;
+            }
+            const headers = {
+                'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+            }
+            let param = {
+              tourId : value,
+              content : this.comment_reply_ins
+            }
+            this.loading = true;
+            this.$axios.post(process.env.VUE_APP_TOUR_COMMENT+"new",param,{headers}).then(() =>{
+              this.comment_reply_ins = "";
+              this.pageChk = false;
+              this.init();
+            }).catch((error) => {
+                this.$swal('',error.response.data.result,'error');
+            }).finally(() => {
+              this.loading = false;
+            });
+      }
       },
 
       pageCurr(value){
