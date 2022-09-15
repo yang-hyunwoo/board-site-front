@@ -112,6 +112,7 @@ export default {
 
       logOutClick() {
         localStorage.clear();
+        sessionStorage.clear();
         this.authChk = true;
         this.$router.push('/');
       }

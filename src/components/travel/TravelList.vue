@@ -30,6 +30,8 @@
                     <p>{{item.name}} ({{item.city}})</p>
                 </div>
                     <small class="text-muted">조회 : {{item.read_count}}</small>
+                    <img  v-bind:src= "heart" style="width: 28px;"  v-on:click.stop="likeBtn(item.id,item.auth,index)" v-if="!item.auth">
+                    <img  v-bind:src= "heartFill" style="width: 28px;"  v-on:click.stop="likeBtn(item.id,item.auth,index)" v-if="item.auth">
               </div>
                    <small class="text-muted">{{item.start_de}} ~ {{item.end_de}}</small>        
                    <div>
@@ -48,6 +50,9 @@
 <script>
 import Pagination from '../layout/Pagination';
 import BlackBg from "../loading/BlackBg"
+import heart from "../../assets/heart.svg"
+import heartFill from "../../assets/heart-fill.svg"
+
 export default {
 	data: function () {
     return {
@@ -57,7 +62,9 @@ export default {
       pageTotal : 0 ,
       pageChk : false ,
       travel_list : [] ,
-       loading:false,
+      loading:false,
+      heart : heart,
+      heartFill : heartFill,
     }
   },
   components: {
@@ -70,20 +77,19 @@ export default {
   },
 
   methods: {
-
     init() {
-
         this.travelList();
-
     },
     travelList() {
-
+      const headers = {
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+        }
       let parameter = {
         "page" : this.page,
         "travelAgencyTitleName" : this.travel_title
       }
       this.loading = true;
-      this.$axios.get(process.env.VUE_APP_TRAVEL_LIST,{params:parameter}).then((res) =>{
+      this.$axios.get(process.env.VUE_APP_TRAVEL_LIST,this.$tokenCheck()==true?{headers,params:parameter}:{params:parameter}).then((res) =>{
          if(res.data.resultCode=="SUCCESS"){
           console.log(res);
           this.pageTotal = res.data.result.totalElements;
@@ -100,6 +106,7 @@ export default {
                 obj.real_pay      = element.real_paid+"원";
                 obj.sale_percent  = element.sale_percent+"%";
                 obj.sale_pay      = element.sale_paid+"원";
+                obj.auth          = element.auth;
                 if(element.thumnbnailFileId ==null || element.thumnbnailFileId==""){
                   obj.img_chk = false;
                 } else{
@@ -136,8 +143,27 @@ export default {
         name: "travelDetail",
         query: { sn: value }
       });
-    }
-  }
+    },
+
+    likeBtn(id,auth,index) {
+      if(!this.$tokenCheck()){
+          this.$router.push("/login");
+        } else {
+              const headers = {
+                    'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+                }
+                console.log(headers);
+                this.$axios.post(process.env.VUE_APP_TRAVEL_AGENCY_LIST_LIKE+id,"",{headers}).then((res) =>{
+                if(res.data.resultCode=="SUCCESS"){
+                  this.travel_list[index].auth = !this.travel_list[index].auth;
+                  }
+                }).catch(() => {
+                    this.$swal('','잠시후 다시 이용해주세요.','error');
+                }).finally(() => {
+                });
+            }
+          }
+}
 
 }
 </script>
