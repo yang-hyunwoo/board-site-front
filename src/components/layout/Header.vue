@@ -3,15 +3,11 @@
    <nav class="navbar navbar-expand-lg stick_header">
   <div class="container-fluid">
        <router-link  class="navbar-brand" to="/">프로젝트 이름</router-link>
-    <!-- <a class="navbar-brand" href="#">프로젝트 이름</a> -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-           <!-- <router-link class="nav-link font-color" to="/">홈</router-link> -->
-        </li>
         <li class="nav-item">
              <router-link class="nav-link font-color" to="/tourList">관광지</router-link>
         </li>
@@ -27,17 +23,14 @@
         <li class="nav-item">
              <router-link class="nav-link font-color" to="/purchaseHistory">구매 내역</router-link>
         </li>
-        <!-- <li class="nav-item">
-             <router-link class="nav-link font-color" to="/">좋아요(구현 예정)</router-link>
-        </li> -->
+        <li class="nav-item">
+             <router-link class="nav-link font-color" to="/myHeart">좋아요</router-link>
+        </li>
         <li class="nav-item">
              <router-link class="nav-link font-color" to="/chatList">채팅방</router-link>
         </li>
         <li class="nav-item">
              <router-link class="nav-link font-color" to="/myPage">마이 페이지</router-link>
-        </li>
-        <li class="nav-item">
-             <router-link class="nav-link font-color" to="/myChatList">내 채팅</router-link>
         </li>
         <li>
             <img class="algin-login" v-bind:src= "login" style="width: 32px;" @click="loginClick" v-if="authChk">

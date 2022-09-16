@@ -37,66 +37,71 @@ const routes = [
         path: '/article',
         name: 'article',
         component: ()=> import('@/components/article/Article.vue'),
-     },
-     {
-      path: '/articleDetail',
-      name: 'articleDetail',
-      component: ()=> import('@/components/article/ArticleDetail.vue'),
-     },
-     {
-      path: '/articleWrite',
-      name: 'articleWrite',
-      component: ()=> import('@/components/article/ArticleWrite.vue'),
-     },
-     {
-      path: '/articleModify',
-      name: 'articleModify',
-      component: ()=> import('@/components/article/ArticleModify.vue'),
-     },
-     {
-      path: '/agencyList',
-      name: 'agencyList',
-      component: ()=> import('@/components/agency/AgencyList.vue'),
-     },
-     {
-      path: '/agencyDetail',
-      name: 'agencyDetail',
-      component: ()=> import('@/components/agency/AgencyDetail.vue'),
-     },
-     {
-      path: '/purchaseHistory',
-      name: 'purchaseHistory',
-      component: ()=> import('@/components/purchase/PurchaseHistory.vue'),
-      beforeEnter:requireAuth(),
-     },
-     {
-      path: '/chatList',
-      name: 'chatList',
-      component: ()=> import('@/components/chat/ChatList.vue'),
-      beforeEnter:requireAuth(),
-     },
-     {
-      path: '/chatDetail',
-      name: 'chatDetail',
-      component: ()=> import('@/components/chat/ChatDetail.vue'),
-     },
-     {
-      path: '/myPage',
-      name: 'myPage',
-      component: ()=> import('@/components/myPage/MyPage.vue'),
-      beforeEnter:requireAuth(),
-     },
-     {
-      path: '/tourList',
-      name: 'tourList',
-      component: ()=> import('@/components/tour/TourList.vue'),
-     },
-     {
-      path: '/tourDetail',
-      name: 'tourDetail',
-      component: ()=> import('@/components/tour/TourDetail.vue'),
-     },
-     
+      },
+      {
+        path: '/articleDetail',
+        name: 'articleDetail',
+        component: ()=> import('@/components/article/ArticleDetail.vue'),
+      },
+      {
+        path: '/articleWrite',
+        name: 'articleWrite',
+        component: ()=> import('@/components/article/ArticleWrite.vue'),
+      },
+      {
+        path: '/articleModify',
+        name: 'articleModify',
+        component: ()=> import('@/components/article/ArticleModify.vue'),
+      },
+      {
+        path: '/agencyList',
+        name: 'agencyList',
+        component: ()=> import('@/components/agency/AgencyList.vue'),
+      },
+      {  
+        path: '/agencyDetail',
+        name: 'agencyDetail',
+        component: ()=> import('@/components/agency/AgencyDetail.vue'),
+      },
+      {
+        path: '/purchaseHistory',
+        name: 'purchaseHistory',
+        component: ()=> import('@/components/purchase/PurchaseHistory.vue'),
+        beforeEnter:requireAuth(),
+       },
+       {
+        path: '/chatList',
+        name: 'chatList',
+        component: ()=> import('@/components/chat/ChatList.vue'),
+        beforeEnter:requireAuth(),
+      },
+      {
+        path: '/chatDetail',
+        name: 'chatDetail',
+        component: ()=> import('@/components/chat/ChatDetail.vue'),
+      },
+      {
+        path: '/myPage',
+        name: 'myPage',
+        component: ()=> import('@/components/myPage/MyPage.vue'),
+        beforeEnter:requireAuth(),
+      },
+      {
+        path: '/tourList',
+        name: 'tourList',
+        component: ()=> import('@/components/tour/TourList.vue'),
+      },
+      {
+        path: '/tourDetail',
+        name: 'tourDetail',
+        component: ()=> import('@/components/tour/TourDetail.vue'),
+      },
+      {
+        path: '/myHeart',
+        name: 'myHeart',
+        component: ()=> import('@/components/like/MyHeart.vue'),
+        beforeEnter:requireAuth(),
+      },
   ],
   },
   {
