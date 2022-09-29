@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="hello">
     <!-- <h1>{{ msg }}</h1> -->
@@ -29,7 +30,7 @@
     </button>
   </div>
 
-<div class="container marketing mgt">
+<div class="container marketing mgt" style="text-align:center">
     <p>추천 여행사</p>
     <div class="row">
       <div class="col-lg-4" v-for="(item,index) of agency_random_list" :key="index">
@@ -82,7 +83,7 @@ import login from "../assets/test.png"
 // import hideKey from 'dotenv';
 
 export default {
-	data: function () {
+  data: function () {
     return {
       login  : login ,
       index : 0,
@@ -141,7 +142,7 @@ export default {
           if(res.data.resultCode=="SUCCESS"){
             this.agency_random_list=[];
             res.data.result.forEach(element => {
-              
+             
               let obj = [];
               obj.name      = element.name;
               obj.agency_id = element.id;

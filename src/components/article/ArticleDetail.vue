@@ -15,7 +15,7 @@
     <ToastViewer v-if="detail_viewer" :content="content"></ToastViewer>
 <div class="margincustom">
     <div class="d-flex row">
-        <div class="col-md-8">
+        <div class="">
             <div class="d-flex flex-column comment-section">
                 <div class="bg-white p-2" v-for="(item,index) of reply" :key="index">
                     <!-- <div class="d-flex flex-row user-info"><img class="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" width="40"> -->
@@ -308,12 +308,13 @@ body{
 .textarea{
   resize: none
 }
-  .margincustom {
-    margin-left : 2rem;
-  }
-  .margintpcust {
-    margin-top : 2rem;
-  }
+.margincustom {
+  margin:0 10vw;
+
+}
+.margintpcust {
+  margin-top : 2rem;
+}
 .deco{
   text-decoration: line-through;
 }

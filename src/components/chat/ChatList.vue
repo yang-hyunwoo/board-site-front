@@ -28,7 +28,22 @@
 
  <Pagination v-if="pageChk" :pageListItem="pageListItem" @pageCurrent="pageCurr" :pageTotal="pageTotal"></Pagination>
 <BlackBg v-if="loading"></BlackBg>
-
+<!-- 채팅방 생성 -->
+<Dialog @close="popOpen=false" v-if="popOpen">
+    <template #cont>
+      <div class="pop-cont">
+        <h3>채팅제목</h3>
+        <input class="form-control" type="text" name="title" id="title" :value="popTitle">
+        <h3>인원</h3>
+        <input class="form-control"  type="number" name="count" id="count" :value="popCount">
+        <div class="pop-btn-area">
+          <button class="btn btn-danger" @click="popOpen=false">취소</button>
+          <button class="btn btn-primary" @clilck="popSave">확인</button>
+        </div>
+      </div>
+        <!-- <img :src="selectQr"> -->
+    </template>
+</Dialog>
 </template>
 
 <script>
@@ -36,6 +51,7 @@ import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import Pagination from '../layout/Pagination';
 import BlackBg from "../loading/BlackBg"
+import Dialog from '../dialog/Dialog';
 
 export default {
 	data: function () {
@@ -47,12 +63,16 @@ export default {
         pageChk : false ,
         loading : false,
         stompClient:'',
+        popOpen:false,
+        popTitle:'',
+        popCount:0,
         
     }
   },
     components :{
          Pagination,
-         BlackBg
+         BlackBg,
+         Dialog
         
     },
     created() {
@@ -93,8 +113,19 @@ export default {
             this.loading = false;
             });
         },
-
+        popSave(){
+          if(this.popTitle!=''){
+            alert('제목을 입력해주세요');
+          }
+          if(this.popCount<=1){
+            // this.$swal('','최소 인원은 2명 입니다.','warning');
+          }
+          else if(this.popCount>=301){
+            // this.$swal('','최대 인원은 300명 입니다.','warning');
+          }
+        },
         newRoom() {
+          this.popOpen=true
             var title;
             var count;
             title = prompt('제목을 입력해주세요.', "100자 이하");
@@ -234,5 +265,22 @@ export default {
 }
 .name {
     color:#5bc0de;    
+}
+.pop-cont{
+  min-width: 300px;
+}
+.pop-cont h3{
+  font-size: 16px;
+}
+.pop-cont >input{
+  margin-bottom: 10px;
+}
+.pop-btn-area{
+  margin-top: 30px;
+  display:flex;
+  justify-content: flex-end;
+}
+.pop-btn-area button:first-of-type{
+  margin-right: 10px;
 }
 </style>

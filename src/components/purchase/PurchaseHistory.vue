@@ -1,5 +1,5 @@
 <template>
-<div class="container bootstrap snippets bootdey" style="margin-top:4rem;">
+<div class="bootstrap snippets bootdey" style="margin-top:4rem;">
     <div class="row" style="margin-left:1rem;">
         <h3>구매 내역</h3>
         <div class="col-lg-12">
@@ -20,18 +20,19 @@
                             <tbody>
                                 <tr v-for="(item,index) of purchase_list" :key="index">
                                     <td>
-                                        <img v-if="item.img_chk" :src="item.img" >
+                                        <div class="img-wrap"><img v-if="item.img_chk" :src="item.img" ></div>
                                         <span class="user-link">{{item.travel_nm}}</span>
                                     </td>
                                     <td>{{item.created_at}}</td>
-                                    <td>{{$numberWithCommas(item.paid)}}원  <button class="btn btn-danger" v-if="item.state=='결제 완료'" style="font-size:10px" @Click="refundClick(item.imp_uid,item.paid,item.person_count,item.id,item.list_id)">결제 취소</button></td>
+                                    <td>{{$numberWithCommas(item.paid)}}원  
+                                        <button class="btn btn-danger" v-if="item.state=='결제 완료'" style="font-size:10px;margin-left:10px;" @Click="refundClick(item.imp_uid,item.paid,item.person_count,item.id,item.list_id)">결제 취소</button></td>
                                     <td class="text-center">
                                         <span class="label label-default">{{item.state}}</span>
                                     </td>
-                                    <td v-if="item.state=='결제 완료'">
+                                    <td v-if="item.state=='결제 완료'" style=" display:flex;align-items: center;">
                                         <img :src="item.qrcode_img">
                                         팝업으로 수정하기
-                                        <button class="btn btn-primary" style="font-size:10px" @click="qrImg(item.qrcode_id)">qr 확인</button>
+                                        <button class="btn btn-primary" style="font-size:10px;margin-left:10px" @click="qrImg(item.qrcode_id,item.qrcode_img)">qr 확인</button>
                                         
                                     </td>
                                     <td v-if="item.state=='결제 취소'">
@@ -52,10 +53,21 @@
    <Pagination v-if="pageChk" :pageListItem="pageListItem" @pageCurrent="pageCurr" :pageTotal="pageTotal" ></Pagination>
 
 <BlackBg v-if="loading"></BlackBg>
+<!-- <div class="qrOpenBg"  v-if="qrOpen" @click="qrOpen=!qrOpen"></div>
+<div v-if="qrOpen" class="qrPopup">
+   <img :src="selectQr">
+</div> -->
+<Dialog @close="qrOpen=false" v-if="qrOpen">
+    <template #cont>
+        <img :src="selectQr">
+    </template>
+</Dialog>
 </template>
 <script>
 import BlackBg from "../loading/BlackBg"
 import Pagination from '../layout/Pagination';
+import Dialog from '../dialog/Dialog';
+
 
 export default {
 	data: function () {
@@ -66,11 +78,16 @@ export default {
         pageTotal : 0 ,
         pageChk : false ,
         purchase_list:[],
+        ///qr 팝업
+        qrOpen:false,
+        selectQr:''
+
     }
   },
     components :{
         BlackBg,
         Pagination,
+        Dialog
         
     },
     created() {
@@ -133,7 +150,9 @@ export default {
             this.page = value-1;
             this.purchaseList();
         },
-        qrImg(value){
+        qrImg(value,src){
+            this.selectQr=src
+            this.qrOpen=true;
             console.log(value);
         },  
         refundClick(uid,paid,person_count,id,list_id) {
@@ -220,6 +239,15 @@ a {
     color: #3498db;
     outline: none!important;
 }
+.img-wrap{
+    width:50px;
+    height:50px;
+    overflow: hidden;
+    margin-right: 15px;
+}
+.img-wrap >img{
+    width:100%;
+}
 .user-list tbody td>img {
     position: relative;
     max-width: 50px;
@@ -237,8 +265,11 @@ a {
 .table tbody tr td:first-child {
     font-size: 1.125em;
     font-weight: 300;
+    display: flex;
+    border:none;
 }
 .table tbody tr td {
+   border:none;
     font-size: 0.875em;
     vertical-align: middle;
     border-top: 1px solid #e7ebee;
@@ -260,4 +291,24 @@ text-decoration:none;
     /* width : 15%; */
     /* font-size: 13px; */
 } 
+.qrOpenBg{
+    top:0;
+    left:0;
+    position:fixed;
+    width:100vw;
+    height:100vh;
+    background: rgba(0,0,0,0.3);
+    z-index: 100;
+    overflow: hidden;
+}
+.qrPopup{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    z-index: 100;
+    padding:10px;
+    border-radius: 13px;
+    background: #fff;
+}
 </style>

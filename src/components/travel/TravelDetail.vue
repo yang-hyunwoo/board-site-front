@@ -11,9 +11,8 @@
    
    <ToastViewer v-if="detail_viewer" :content="content"></ToastViewer>
   <span class="margincustom" style="font-size:15px;">가격:<span class="deco" >{{$numberWithCommas(real_pay)}}</span><span style="color:red; margin-left: 1rem;">{{sale_percent}}</span> <span style="margin-left:1rem;">{{$numberWithCommas(sale_paid)}}</span></span>
-<div class="d-grid gap-2 col-6 mx-auto">
-  <br>
-  <button  class="btn btn-primary" type="button" @click="reserve" :disabled="person_max_count <= person_count">예약하기</button>
+<div style="margin-top:30px;text-align:center">
+  <button style="width:30%;min-width:300px" class="btn btn-primary" type="button" @click="reserve" :disabled="person_max_count <= person_count">예약하기</button>
 </div>
 <BlackBg v-if="loading"></BlackBg>
 </template>

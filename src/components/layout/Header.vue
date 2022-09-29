@@ -1,13 +1,13 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-   <nav class="navbar navbar-expand-lg stick_header">
-  <div class="container-fluid">
+  <nav class="navbar navbar-expand-lg stick_header">
+    <div class="container-fluid"  style="margin: 0 10vw;">
        <router-link  class="navbar-brand" to="/">프로젝트 이름</router-link>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <div class="collapse navbar-collapse nav" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav__list">
         <li class="nav-item">
              <router-link class="nav-link font-color" to="/tourList">관광지</router-link>
         </li>
@@ -32,13 +32,12 @@
         <li class="nav-item">
              <router-link class="nav-link font-color" to="/myPage">마이 페이지</router-link>
         </li>
-        <li>
-            <img class="algin-login" v-bind:src= "login" style="width: 32px;" @click="loginClick" v-if="authChk">
-        </li>
-        <li>
-            <img class="algin-logOut" v-bind:src= "logOut" style="width: 32px;" @click="logOutClick">
-        </li>
       </ul>
+      <div class="nav__login">
+        <img class="nav__login__profile" v-bind:src= "login" style="width: 32px;" @click="loginClick" v-if="authChk">
+        <img v-bind:src= "logOut" style="width: 32px;" @click="logOutClick">
+      </div>
+      
         
       <!-- <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -62,19 +61,23 @@
 .font-color {
  color : #31709d !important;
 }
-.algin-login {
-  position : absolute;
-  top : 25%;
-  right: 7.5%;
-  /* margin-left : 10%; */
+
+.nav{
+  display:flex;
+  justify-content: space-between;
+  
+}
+.nav__login__profile{
+  margin-right:10px;
 }
 
-.algin-logOut {
-  position : absolute;
-  top : 25%;
-  right: 3%;
-  /* margin-left : 10%; */
+@media (max-width: 991px) {
+  .nav{
+    flex-direction: column;
+    align-items:flex-end ;
+  }
 }
+
 
 ul li {list-style-type: none; float: left;}
 </style>

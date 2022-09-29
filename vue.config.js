@@ -7,7 +7,7 @@ module.exports = defineConfig({
     allowedHosts: ['.iamport.kr'],
     proxy: {
       '/api' : {
-        target : 'http://192.168.0.2:8081',
+        target : 'http://localhost:8081',
         changeOrigin: true,
         logLevel: 'debug',
         '^/api' : '/api'

@@ -213,6 +213,7 @@ export default {
         this.$axios.post(process.env.VUE_APP_FILE_UPLOAD,formdata,{headers}).then((res) =>{
             this.img = process.env.VUE_APP_FILE_IMAGE_READ+res.data[0].fileId+"/1";
             this.img_id = res.data[0].fileId;
+            console.log(res);
         }).catch(() => {
         }).finally(() => {
         });

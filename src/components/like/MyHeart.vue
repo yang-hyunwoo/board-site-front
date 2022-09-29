@@ -8,7 +8,7 @@
          </div>
        </div>
      </section>
-    
+   
     <div class="album py-5 bg-light">
        <div class="container">
    
@@ -30,8 +30,8 @@
                  </div>
                       <small class="text-muted">{{item.start_de}} ~ {{item.end_de}}</small>        
                       <div>
-                        <small class="text-muted">가격:<span class="deco">{{item.real_pay}}</span> <span style="color: red;">{{item.sale_percent}}</span>  {{item.sale_pay}} </small>         
-                      </div>         
+                        <small class="text-muted">가격:<span class="deco">{{item.real_pay}}</span> <span style="color: red;">{{item.sale_percent}}</span>  {{item.sale_pay}} </small>        
+                      </div>        
                </div>
              </div>
            </div>
@@ -43,7 +43,7 @@
    </template>
    
    <script>
-   import Pagination from '../layout/Pagination';
+   import Pagination from '../layout/Pagination'
    import BlackBg from "../loading/BlackBg"
    import heart from "../../assets/heart.svg"
    import heartFill from "../../assets/heart-fill.svg"
@@ -187,4 +187,3 @@
      display: inline-block;
    }
    </style>
-   

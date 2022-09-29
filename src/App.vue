@@ -29,3 +29,14 @@ export default {
 }
 
 </script>
+<style>
+::-webkit-scrollbar{
+  width:0;
+}
+::-webkit-scrollbar-thumb{
+  background :transparent;
+  border-radius:5px;
+}
+::-webkit-scrollbar-track{
+  background: transparent;
+}</style>
