@@ -97,7 +97,7 @@ export default {
         }).catch((error) => {
              this.$swal('',error.response.data.result,'error');
         }).finally(() => {
-        //   this.loading = false;
+          // this.loading = false;
           this.detail_viewer = true;
           this.agencyTravelListInit();
         });
@@ -109,7 +109,6 @@ export default {
             }
          this.$axios.get(process.env.VUE_APP_TRAVEL_AGENCY_TRAVEL_LIST+this.articleId,{params:parameter}).then((res) =>{
           if(res.data.resultCode=="SUCCESS"){
-            console.log(res);
               this.pageTotal = res.data.result.totalElements;
               this.travel_list=[];
                 res.data.result.content.forEach(element => {

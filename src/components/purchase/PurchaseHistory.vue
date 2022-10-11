@@ -21,7 +21,7 @@
                                 <tr v-for="(item,index) of purchase_list" :key="index">
                                     <td>
                                         <div class="img-wrap"><img v-if="item.img_chk" :src="item.img" ></div>
-                                        <span class="user-link">{{item.travel_nm}}</span>
+                                        <span class="user-link" style="font-size:16px;">{{item.travel_nm}}</span>
                                     </td>
                                     <td>{{item.created_at}}</td>
                                     <td>{{$numberWithCommas(item.paid)}}원  
@@ -29,9 +29,8 @@
                                     <td class="text-center">
                                         <span class="label label-default">{{item.state}}</span>
                                     </td>
-                                    <td v-if="item.state=='결제 완료'" style=" display:flex;align-items: center;">
-                                        <img :src="item.qrcode_img">
-                                        팝업으로 수정하기
+                                    <!-- <td v-if="item.state=='결제 완료'" style=" display:flex;align-items: center;"> -->
+                                        <td v-if="item.state=='결제 완료'" >
                                         <button class="btn btn-primary" style="font-size:10px;margin-left:10px" @click="qrImg(item.qrcode_id,item.qrcode_img)">qr 확인</button>
                                         
                                     </td>

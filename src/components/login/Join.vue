@@ -129,13 +129,16 @@ export default {
               "name"        : this.user_name ,
               "nickName"    : this.nick_name,
               "gender"      : this.gender,
-              "phoneNumber" : this.phone_number
+              "phoneNumber" : this.phone_number,
+              "role"        : "USER"
         }
 
         this.loading = true;
 
-        this.$axios.post(process.env.VUE_APP_TRIP_JOIN ,param).then(() =>{
+        this.$axios.post(process.env.VUE_APP_TRIP_JOIN ,param).then((res) =>{
+          if(res.data.resultCode=="SUCCESS"){
               this.$router.push("/loginSuccess");
+            }
         }).catch((error) => {
              this.$swal('',error.response.data.result,'error');
         }).finally(() => {

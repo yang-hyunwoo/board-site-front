@@ -48,7 +48,7 @@
     </b-tr>
   </b-tbody>
 </b-table-simple>
-   <button style="float:right" type="button" class="btn btn-primary" @click="writer">글 쓰기</button>
+   <button style="float:right" type="button" class="btn btn-primary" @click="writer">글작성</button>
 </section>
 <Pagination v-if="pageChk" :pageListItem="pageListItem"  @pageCurrent="pageCurr" :pageTotal="pageTotal"></Pagination>
 </template>

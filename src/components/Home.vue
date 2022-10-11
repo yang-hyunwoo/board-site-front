@@ -56,7 +56,8 @@
       <div class="col-md-7 " v-if="index%2==0">
 
         <h2 class="featurette-heading fw-normal lh-1" @click="tourList(item.id)" style="cursor: pointer;">{{item.city}}</h2>
-        <p class="lead">{{item.content}}</p>
+        <!-- <pre v-html="item.content"></pre> -->
+        <p class="lead" v-html="item.content"></p>
       </div>
       <div class="col-md-5 order-md-2" >
         <div v-if="!item.img_real">
@@ -69,7 +70,7 @@
       <div class="col-md-7 order-md-2" v-if="index%2!=0">
 
       <h2 class="featurette-heading fw-normal lh-1" @click="tourList(item.id)" style="cursor: pointer;">{{item.city}}</h2>
-        <p class="lead">{{item.content}}</p>
+      <p class="lead" v-html="item.content"></p>
         </div>
     </div>
   </div>

@@ -1,9 +1,6 @@
 <template>
-<div class="container-fluid">
-  <div class="px-lg-5">
-
-    <!-- For demo purpose -->
-    <div class="row py-5">
+    <section class="py-5 text-center container">
+      <div class="row py-5">
       <div class="col-lg-12 mx-auto">
         <div class="text-white p-5 shadow-sm rounded banner" style="text-align:center">
           <h1 class="display-4">여행사</h1>
@@ -14,6 +11,13 @@
         </div>
       </div>
     </div>
+     </section>
+  
+<div class="container">
+  <div class="row py-5">
+
+    <!-- For demo purpose -->
+
     <!-- End -->
 
     <div class="row">
@@ -164,5 +168,9 @@ body {
 }
 .image-wrap>image{
   height:100%;
+}
+.img-fluid{
+  max-width: 100%;
+    height: 100%;
 }
 </style>

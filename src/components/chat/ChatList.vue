@@ -32,13 +32,13 @@
 <Dialog @close="popOpen=false" v-if="popOpen">
     <template #cont>
       <div class="pop-cont">
-        <h3>채팅제목</h3>
-        <input class="form-control" type="text" name="title" id="title" :value="popTitle">
-        <h3>인원</h3>
-        <input class="form-control"  type="number" name="count" id="count" :value="popCount">
+        <h3>채팅방 제목</h3>
+        <input class="form-control" type="text" name="title" id="title" v-model = popTitle>
+        <h3>최대 인원</h3>
+        <input class="form-control"  type="number" name="count" id="count" v-model = "popCount">
         <div class="pop-btn-area">
           <button class="btn btn-danger" @click="popOpen=false">취소</button>
-          <button class="btn btn-primary" @clilck="popSave">확인</button>
+          <button class="btn btn-primary" @click="popSave">확인</button>
         </div>
       </div>
         <!-- <img :src="selectQr"> -->
@@ -65,7 +65,7 @@ export default {
         stompClient:'',
         popOpen:false,
         popTitle:'',
-        popCount:0,
+        popCount:2,
         
     }
   },
@@ -76,7 +76,6 @@ export default {
         
     },
     created() {
-        //  this.connect();
         this.init();
     },  
     methods: {
@@ -114,42 +113,25 @@ export default {
             });
         },
         popSave(){
-          if(this.popTitle!=''){
-            alert('제목을 입력해주세요');
+          if(this.popTitle==''){
+            this.$swal('','제목을 입력해주세요.','warning');
+            return ;
           }
           if(this.popCount<=1){
-            // this.$swal('','최소 인원은 2명 입니다.','warning');
+            this.$swal('','최소 인원은 2명 입니다.','warning');
+            return ;
           }
           else if(this.popCount>=301){
-            // this.$swal('','최대 인원은 300명 입니다.','warning');
+            this.$swal('','최대 인원은 300명 입니다.','warning');
+            return ;
           }
-        },
-        newRoom() {
-          this.popOpen=true
-            var title;
-            var count;
-            title = prompt('제목을 입력해주세요.', "100자 이하");
-            if(title!=null){
-              count = prompt('인원수를 입력해주세요.', 5);
-            }
-            if(count<=1){
-              this.$swal('','최소 인원은 2명 입니다.','warning');
-              return false;
-            }
-            if(count>=301){
-              this.$swal('','최대 인원은 300명 입니다.','warning');
-              return false;
-            }
-            if(title != null && count != null ){
+
+          if(this.popTitle != null && this.popCount != null ){
               let param = {
                 "publicRoom" : true,
-                "roomCount"  : count,
-                "roomName"   : title
-
+                "roomCount"  : this.popCount,
+                "roomName"   : this.popTitle
             }
-              let parameter = {
-              "page" : this.page
-              }
               const headers = {
               'Authorization': 'Bearer ' + sessionStorage.getItem("token")
               }
@@ -161,10 +143,14 @@ export default {
                       query: { sn: res.data.result }
                     });
               }).catch((error) => {
-                console.log(error);
+                this.$swal('',error.response.data.result,'error');
               }).finally(() => {
               });
           }
+
+        },
+        newRoom() {
+          this.popOpen=true;
         },
 
         connect() {
@@ -180,7 +166,7 @@ export default {
                 frame => {
                 // 소켓 연결 성공
                 this.connected = true;
-                console.log('소켓 연결 성공', frame);
+                // console.log('소켓 연결 성공', frame);
                 
                 //새 채팅글 입력시 채팅방 리로드
                 this.stompClient.subscribe("/topic/roomList", res => {
