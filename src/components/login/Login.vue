@@ -7,7 +7,9 @@
     <div>
 <img class="mb-4" src="/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">로그인</h1>
+    <div>
 
+  </div>
     <div class="form-floating">
       <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" v-model="email">
       <label for="floatingInput">Email address</label>
@@ -16,8 +18,9 @@
       <input type="password" class="form-control" id="floatingPassword" placeholder="Password" v-model="password">
       <label for="floatingPassword">Password</label>
     </div>
-
-    <div class="checkbox mb-4 matop" >
+    <!-- <div id="naver_id_login" ></div> -->
+    <div class="checkbox mb-4 matop" style="display:flex;" >
+      <button @click="naverLoginClick" style="border: 0;"><img v-bind:src="naverLogin" style="width:100px;" /></button>
       <!-- <label>
         <input type="checkbox" value="remember-me"> Remember me
       </label> -->
@@ -27,25 +30,48 @@
     <p class="mt-3" @click="pwChk"><a style="text-decoration: underline; cursor: pointer;">비밀번호 찾기</a></p>
   <!-- </form> -->
   </div>
+
   </div>
+  
  <BlackBg v-if="loading"></BlackBg>
+
 </template>
 
 <script>
 import BlackBg from "../loading/BlackBg"
-
+import naverLogin from "../../assets/btnG_축약형.png"
 export default {
   components: {
-    BlackBg
+    BlackBg,
   },
 	data: function () {
     return {
       email:"",
       password:"",
       loading:false,
+      callbackUrl:'',
+      client_id:'',
+      naverLogin: naverLogin
     }
   },
+  mounted() {
+    this.$axios.get(process.env.VUE_APP_NAVER_CLIENT_ID_CALLBACK).then((res) =>{
+          if(res.data.resultCode=="SUCCESS"){
+              console.log(res);
+              this.client_id = res.data.result.clientId;
+               this.callbackUrl = res.data.result.callbackUrl;
+              
+        
+          }
+        }).catch(() => {
+             this.$swal('','잠시후 다시 이용해주세요.','error');
+        }).finally(() => {
+        });
+  },
   methods: {
+    naverLoginClick() {
+      this.naverLoginPop(this.client_id,this.callbackUrl)
+    },
       join() {
         this.$router.push("/join");
       },
@@ -75,7 +101,19 @@ export default {
         });
       },
       pwChk() {
+        console.log(localStorage.getItem("token"));
         alert("추후 예정");
+      },
+
+      //네이버 로그인 이벤트  window 팝업 호출 한다 . NaverLoginCallback.vue로 이동 
+      naverLoginPop(client_id , callbackUrl) {
+        let uri = 'https://nid.naver.com/oauth2.0/authorize?' +
+            'response_type=code' +                  
+            '&client_id=' +client_id +     
+            '&state=NAVER_LOGIN_TEST' +           
+            '&redirect_uri='+callbackUrl;  
+            window.open(uri, "Naver Login Test PopupScreen", "width=500, height=600");
+       
       }
 
   }

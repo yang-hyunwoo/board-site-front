@@ -130,7 +130,8 @@ export default {
               "nickName"    : this.nick_name,
               "gender"      : this.gender,
               "phoneNumber" : this.phone_number,
-              "role"        : "USER"
+              "role"        : "USER",
+              "loginType"   : ""
         }
 
         this.loading = true;

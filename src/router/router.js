@@ -102,6 +102,7 @@ const routes = [
         component: ()=> import('@/components/like/MyHeart.vue'),
         beforeEnter:requireAuth(),
       },
+      
   ],
   },
   {
@@ -128,6 +129,11 @@ const routes = [
           path: '/travelPaymentSuccess',
           name: 'travelPaymentSuccess',
           component: ()=> import('@/components/travel/TravelPaymentSuccess.vue'),
+        },
+        {
+          path: '/naverLoginCallback',
+          name: 'naverLoginCallback',
+          component: ()=> import('@/components/login/NaverLoginCallback.vue'),
         },
     ],
 },
