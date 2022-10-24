@@ -1,9 +1,6 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template >
- <!-- <body class="text-center">
-<main class="form-signin w-100 m-auto">  -->
     <div class="ares">
-       잠시만 기다려주세요...
+       카카오 로그인 잠시만 기다려주세요...
   </div>
 
 
@@ -25,8 +22,8 @@ export default {
     }
   },
   mounted() {
-    let naverUrl = this.getJsonFromUrl(location.href);    //네이버 팝업의 주소를 받아서 code / state를 가져온다.
-    this.naverCodeCallback(naverUrl.code , naverUrl.state,naverUrl.refresh_token);
+    let kakaoUrl = this.getJsonFromUrl(location.href);    //네이버 팝업의 주소를 받아서 code / state를 가져온다.
+    this.kakaoCodeCallback(kakaoUrl.code);
   },
   methods: {
     getJsonFromUrl(url) {
@@ -41,13 +38,11 @@ export default {
     },
 
     //네이버의 code 와  state를 가지고 사용자를 조회 및 db에 저장을 한다.
-    naverCodeCallback(code,state,refresh_token) {
+    kakaoCodeCallback(code) {
       let parameter = {
-          "code" : code,
-          "state" : state,
-          "refresh_token": refresh_token
+          "code" : code
         }
-      this.$axios.get(process.env.VUE_APP_NAVER_CALLBACK_CODE,{params:parameter}).then((res) =>{
+      this.$axios.get(process.env.VUE_APP_KAKAO_CALLBACK_CODE,{params:parameter}).then((res) =>{
          if(res.data.resultCode=="SUCCESS"){
               window.close();
               opener.location.href="http://localhost:4000";

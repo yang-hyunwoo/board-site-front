@@ -135,6 +135,12 @@ const routes = [
           name: 'naverLoginCallback',
           component: ()=> import('@/components/login/NaverLoginCallback.vue'),
         },
+        {
+          path: '/kakaoLoginCallback',
+          name: 'kakaoLoginCallback',
+          component: ()=> import('@/components/login/KakaoLoginCallback.vue'),
+        },
+        
     ],
 },
 

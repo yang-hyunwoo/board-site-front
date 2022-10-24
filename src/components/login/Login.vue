@@ -21,9 +21,7 @@
     <!-- <div id="naver_id_login" ></div> -->
     <div class="checkbox mb-4 matop" style="display:flex;" >
       <button @click="naverLoginClick" style="border: 0;"><img v-bind:src="naverLogin" style="width:100px;" /></button>
-      <!-- <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label> -->
+      <button @click="kakaoLoginClick" style="border: 0;">카카오</button>
     </div>
     <button class="w-100 btn btn-lg btn-primary" @click="login" >로그인</button>
     <p class="mt-3" @click="join" ><a style="text-decoration: underline; cursor: pointer;">회원이 아니신가요?</a></p>
@@ -55,22 +53,33 @@ export default {
     }
   },
   mounted() {
-    this.$axios.get(process.env.VUE_APP_NAVER_CLIENT_ID_CALLBACK).then((res) =>{
+    // window.Kakao.init("f71a316501aa1e5f1fc83fbc3f6cbd2b");
+
+  },
+  methods: {
+   async kakaoLoginClick() {
+      await this.$axios.get(process.env.VUE_APP_KAKAO_CLIENT_ID_CALLBACK).then((res) =>{
           if(res.data.resultCode=="SUCCESS"){
-              console.log(res);
-              this.client_id = res.data.result.clientId;
-               this.callbackUrl = res.data.result.callbackUrl;
-              
-        
+               let client_id = res.data.result.clientId;
+               let callbackUrl = res.data.result.callbackUrl;
+               this.kakaoLoginPop(client_id,callbackUrl);
           }
         }).catch(() => {
              this.$swal('','잠시후 다시 이용해주세요.','error');
         }).finally(() => {
-        });
-  },
-  methods: {
-    naverLoginClick() {
-      this.naverLoginPop(this.client_id,this.callbackUrl)
+        }); 
+    },
+    async naverLoginClick() {
+      await this.$axios.get(process.env.VUE_APP_NAVER_CLIENT_ID_CALLBACK).then((res) =>{
+          if(res.data.resultCode=="SUCCESS"){
+              let client_id = res.data.result.clientId;
+               let callbackUrl = res.data.result.callbackUrl;
+               this.naverLoginPop(client_id,callbackUrl);
+          }
+        }).catch(() => {
+             this.$swal('','잠시후 다시 이용해주세요.','error');
+        }).finally(() => {
+        });     
     },
       join() {
         this.$router.push("/join");
@@ -113,7 +122,14 @@ export default {
             '&state=NAVER_LOGIN_TEST' +           
             '&redirect_uri='+callbackUrl;  
             window.open(uri, "Naver Login Test PopupScreen", "width=500, height=600");
-       
+      },
+      //카카오 로그인 이벤트  window 팝업 호출 한다 . KakaoLoginCallback.vue로 이동 
+      kakaoLoginPop(client_id , callbackUrl) {
+        let uri = 'https://kauth.kakao.com/oauth/authorize?' +               
+             'response_type=code'+
+            '&client_id=' +client_id +           
+            '&redirect_uri=' + callbackUrl ;
+            window.open(uri, "Kakao Login Test PopupScreen", "width=500, height=600");
       }
 
   }
