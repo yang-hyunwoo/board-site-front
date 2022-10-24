@@ -44,7 +44,7 @@
                                  <td class="field">휴대폰</td>
                                  <td><input type="text" style="margin:1px;" v-model="phone_number"></td>
                               </tr>
-                              <tr class="highlight">
+                              <tr class="highlight" v-if="loginType==''">
                                  <td class="field">비밀번호</td>
                                  <td><input type="password" style="margin:1px;" v-model="user_password"><button class="btn btn-primary" style="margin-left:1rem;" @click="passwordClick">저장</button> *비밀번호는 따로 저장 버튼을 눌러야 변경 가능 합니다.</td>
                               </tr>
@@ -95,6 +95,7 @@ export default {
         img:"",
         img_id:"",
         user_password:"",
+        loginType:'',
     }
   },
   created(){
@@ -111,7 +112,9 @@ export default {
           }
         this.loading = true;
         this.$axios.get(process.env.VUE_APP_TRIP_USER_MY_PAGE,{headers}).then((res) =>{
+            console.log(res);
             if(res.data.resultCode=="SUCCESS"){
+                this.loginType = res.data.result.loginType;
                 this.user_name = res.data.result.name;
                 this.user_email = res.data.result.email;
                 this.user_nickname = res.data.result.nickName;
