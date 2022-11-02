@@ -131,7 +131,7 @@ export default {
               "gender"      : this.gender,
               "phoneNumber" : this.phone_number,
               "role"        : "USER",
-              "loginType"   : ""
+              "loginType"   : null
         }
 
         this.loading = true;
